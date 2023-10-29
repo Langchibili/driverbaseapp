@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RatingForm from './RatingForm';
-import { api_url, getJwt } from '@/Constants';
+import { api_url, getJwt, textHasEmailAddress, textHasPhoneNumber } from '@/Constants';
+import { Alert } from '@mui/material';
 
 class ReviewsForm extends Component {
   constructor(props) {
@@ -76,12 +77,24 @@ class ReviewsForm extends Component {
     
     if (!reviewBody) {
       this.setState({ error: "Write something about the user, Eg, 'Good employee'" });
-      return;
+      return
     }
-
+    if(textHasPhoneNumber(reviewBody)){
+      this.setState({
+        error: "You cannot add a phone number into the review. Please remove the phone number to post the review."
+      })
+      return
+    }
+    if(textHasEmailAddress(reviewBody)){
+      this.setState({
+        error: "You cannot add an email address into the review. Please remove the email address to post the review."
+      })
+      return
+    }
+    
     if (rating === 0) {
       this.setState({ error: 'Pick a rating, from 1 to 5 stars' });
-      return;
+      return
     }
 
     const reviewObject = {
@@ -145,6 +158,7 @@ class ReviewsForm extends Component {
   render() {
     const { error } = this.state;
     if(this.state.alreadyReviewed) return <>You have already reviewed this {this.state.userProfile.type} you cannot review them twice.</>
+    if(this.props.loggedInUserProfile.id === this.state.userProfile.id) return <Alert severity='warning'>You cannot rate yourself.</Alert>
     return (
       <div>
         <RatingForm getRating={this.getRating} />

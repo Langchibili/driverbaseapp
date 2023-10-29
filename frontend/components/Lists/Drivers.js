@@ -88,6 +88,13 @@ export default class Drivers extends Component {
     return <Link style={{color:"cadetblue"}} className="contact-icon me-3" href={'/drivers/'+driverCategory} onClick={this.props.handlePageChange}><i className="fa fa-truck" aria-hidden="true" /></Link>
   }
 
+  enlistDriverButtons = (userId)=>{
+    return (<div>
+            <Button disabled={this.props.submitting} onClick={()=>{ this.props.enlistDriver(userId)}}>Enlist Driver</Button>
+            <Button disabled={this.props.submitting} onClick={()=>{ this.props.enlistDriverAsRecommended(userId)}} color='secondary'>Enlist Driver As Recommended</Button>
+          </div>)
+  }
+
   renderDriversList = ()=>{
     const listFormat = this.props.listFormat;
     const drivers = this.props.drivers
@@ -175,6 +182,7 @@ export default class Drivers extends Component {
                       </div>
                     </li>
                   </ul>
+                  {this.props.actionTotake === "activate"? <>{this.enlistDriverButtons(driverProfile.id)} <div>Driver Profile Id: <strong>{driverProfile.id}</strong></div><div>Driver Usernname: <strong>{driver.username}</strong></div></>: ""}
                   </div>
               </div>
             )

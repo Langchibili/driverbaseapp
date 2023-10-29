@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { textHasEmailAddress, textHasPhoneNumber } from '@/Constants';
 // import ImageUploader from './ImageUploader';
 
 class JobsAddForm extends Component {
@@ -69,9 +70,36 @@ class JobsAddForm extends Component {
 
     if (!jobBody) {
       this.setState({ error: "Write something about the job, Eg, 'I need a driver to transport goods for me...'" });
-      return;
+      return
+    }
+
+    if(textHasPhoneNumber(jobBody)){
+      this.setState({
+        error: "You cannot add a phone number into the job description. Please remove the phone number to post the job."
+      })
+      return
     }
     
+    if(textHasPhoneNumber(title)){
+      this.setState({
+        error: "You cannot add a phone number into the job title. Please remove the phone number to post the job."
+      })
+      return
+    }
+
+    if(textHasEmailAddress(jobBody)){
+      this.setState({
+        error: "You cannot add an email address into the job description. Please remove the email address to post the job."
+      })
+      return
+    }
+    if(textHasEmailAddress(jobBody)){
+      this.setState({
+        error: "You cannot add an email address into the job title. Please remove the email address to post the job."
+      })
+      return
+    }
+
     const jobObject = {
       data: {
         userid: user.id,

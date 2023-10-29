@@ -1,0 +1,19 @@
+import React, { Component } from 'react';
+        
+export default class Content extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+}
+
+  render() {
+    return (
+        <div>
+            <>What are you managing?</>
+            <button onClick={this.handleSubmit} className="btn bg-white text-primary btn-block">Jobs</button>
+            <button onClick={this.handleSubmit} className="btn bg-white text-primary btn-block">Chats</button>
+            </div>
+   );
+}
+}

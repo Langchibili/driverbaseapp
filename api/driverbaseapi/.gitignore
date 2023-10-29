@@ -82,6 +82,7 @@ ssl
 nbproject
 public/uploads/*
 !public/uploads/.gitkeep
+export_20231017034317.tar.gz.enc
 
 ############################
 # Node.js

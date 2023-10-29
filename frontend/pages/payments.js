@@ -9,8 +9,9 @@ export default function Payments() {
     <UpAndBackButton/>
     <h2 style={{marginTop:5,marginBottom:5}}><Typography component="lagend" sx={{fontWeight:'bold',textTransform:'uppercase'}}>A <strong style={{fontWeight:900,color:'green',fontFamily:"Helvetica"}}>K10</strong> fee has to be paid for any application to be listed.</Typography></h2>
     <h3 style={{marginTop:5,marginBottom:5,opacity:0.7}}><Typography component="legend">(An optional amount from <strong style={{fontWeight:600,color:'green',fontFamily:"Helvetica"}}>K15 - k100</strong> can be paid for any application to be listed among <strong style={{color:"crimson"}}>Recommended Drivers</strong>)</Typography></h3>
-    <h3 style={{marginTop:10,marginBottom:5,fontFamily:"Helvetica"}}><Typography component="legend">Payments should strictly be made to this number: <strong style={{fontWeight:900,color:'green'}}>0975630500</strong></Typography></h3>
-    <p style={{color:'blue',marginBottom:10,fontFamily:"Helvetica"}}><Typography component="legend">Follow the guidelines listed below</Typography></p>
+    <h3 style={{marginTop:10,marginBottom:5,fontFamily:"Helvetica"}}><Typography component="legend">Airtel Money Payments should strictly be made to this number: <strong style={{fontWeight:900,color:'green'}}>0975630500</strong></Typography></h3>
+    <h3 style={{marginTop:10,marginBottom:5,fontFamily:"Helvetica"}}><Typography component="legend">Mtn Money Payments should strictly be made to this number: <strong style={{fontWeight:900,color:'green'}}>0966213952</strong></Typography></h3>
+    <p style={{color:'blue',marginBottom:10,fontFamily:"Helvetica"}}><Typography component="legend">Follow the guidelines listed below for airtel money payments</Typography></p>
     <div style={{border:"1px solid lightgray",padding:5,marginBottom:10}}>
         <p style={{fontFamily:"Helvetica"}}>Step 1: ensure that you are using an airtel number</p>
         <p style={{fontFamily:"Helvetica"}}>Step 2: dial *115#</p>

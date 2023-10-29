@@ -160,7 +160,7 @@ class ItemListAll extends Component {
               this.setState({// add items to show now
                 itemsToDisplay: items,
                 contentLoaded: true
-              },()=>{console.log(this.state)})
+              })
           }
   })
 }
@@ -172,4 +172,3 @@ class ItemListAll extends Component {
 }
 
 export default ItemListAll;
-

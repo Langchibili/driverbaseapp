@@ -29,7 +29,7 @@ class JobApplicationForm extends Component {
     const JobApplicants = this.props.job.data.attributes.applicants.data
     JobApplicants.push(user.id)
     const jobApplicationObject = {data:{applicants:JobApplicants}}
-    
+    console.log('these are the applicants',jobApplicationObject)
     // firstly add a job to the jobs backend
     try {
       this.setState({submitting:true,submittingText:'Applying...'})// to disable button from re-requesting

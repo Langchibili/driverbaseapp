@@ -85,7 +85,7 @@ class Content extends Component {
               loggedInUserProfile={this.props.loggedInUserProfile}
               handlePageChange={this.handlePageChange}
               itemsName ='jobs'
-              reqUrlPath='/jobs?populate=car_owner_profile&pagination[limit]=5&sort=id%3Adesc&meta=true'
+              reqUrlPath='/jobs?populate=car_owner_profile&pagination[limit]=8&sort=id%3Adesc&meta=true'
               api_url={this.props.api_url}
               listType='jobs' 
               listTitle='Latest Jobs'/>

@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import Link from 'next/link';
+import { textHasEmailAddress, textHasPhoneNumber } from '@/Constants';
 
 class ProfileUpdateForm extends Component {
   constructor(props) {
@@ -296,6 +297,27 @@ class ProfileUpdateForm extends Component {
             }
             // setting up updateObject
              updateObject.data = {...userProfile.carOwnerProfile}
+        }
+
+        if(textHasPhoneNumber(this.about.current.value)){ // no phone numbers in description
+            this.setState({
+                errorExists: true,
+                updating: false,
+                submittingText: 'retry',
+                snapBackOpen: true,
+                errorMessage: "You cannot add a phone number into the description. Please remove the phone number to update the descrition."
+            })
+            return
+        }
+        if(textHasEmailAddress(this.about.current.value)){ // cannot add email address into description
+            this.setState({
+                errorExists: true,
+                updating: false,
+                submittingText: 'retry',
+                snapBackOpen: true,
+                errorMessage: "You cannot add an email address into the description. Please remove the email address to update the description."
+            })
+            return
         }
         
         this.setState({

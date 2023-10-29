@@ -101,6 +101,15 @@
     "featured": {
       "type": "boolean",
       "default": false
+    },
+    "chatRooms": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::chat-room.chat-room"
+    },
+    "chatpoints": {
+      "type": "integer",
+      "default": 10
     }
   }
 }

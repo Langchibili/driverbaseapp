@@ -47,7 +47,7 @@ class JobsEditForm extends Component {
     const jobId = this.props.job.data.id // from props cause job has no id
     const jobUpdateObject = {id: jobId, data:job}
     delete job.applicants// remove applicants, not needed here
-    
+   
     // firstly add a job to the jobs backend
     try {
         this.setState({submitting:true,submittingText:'Updating...'})// to disable button from re-requesting

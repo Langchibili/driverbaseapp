@@ -17,6 +17,8 @@ alpha-release-build.txt
 changes-made-to-api.txt
 settings-page-concept.txt
 pages/drivers_numbers.js
+pages/chat.js
+components/ChatApp
 # production
 /build
 

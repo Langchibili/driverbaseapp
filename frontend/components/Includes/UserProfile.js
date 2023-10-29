@@ -635,12 +635,11 @@ function ImageViewModal(props) {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        maxWidth: '90%',
+        maxWidth: '100%',
         bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,
-        p: 4,
-      };
+      }
   return (
     <div onClick={props.handleImageModalClose}>
       <Modal
@@ -649,7 +648,7 @@ function ImageViewModal(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={ModalStyle}>
-          {/* {props.showCover? <img src={props.profileCoverSrc}/>: <img src={props.profilePhotoSrc}/>} */}{/* This code allows full view of cover photos, to be released later as an update */} 
+          {props.showCover? <img src={props.profileCoverSrc}/>: <img src={props.profilePhotoSrc}/>} {/* This code allows full view of cover photos, to be released later as an update */} 
           <img src={props.profilePhotoSrc} width='100%'/>
           <IconButton onClick={props.handleImageModalClose} aria-label="cancel">
             <Cancel />

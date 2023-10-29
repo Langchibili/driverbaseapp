@@ -20,7 +20,7 @@ export default function UpAndBackButton() {
                     <Home color="secondary"/>
                 </Fab>
             </Link>
-            <Fab sx={{ marginBottom: 1 }} size="small"  aria-label="add" onClick={()=> router.back()}>
+            <Fab sx={{ marginTop: 0.5}} size="small"  aria-label="add" onClick={()=> router.back()}>
                 <ArrowBackOutlined color="secondary"/>
             </Fab>
             {/* <Link href='#'>
