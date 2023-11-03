@@ -1,4 +1,4 @@
-import { imageUrlFormat } from '@/Constants';
+import { backEndUrl, imageUrlFormat } from '@/Constants';
 import Link from 'next/link';
 import React, { Component } from 'react';
 
@@ -7,7 +7,7 @@ class CarOwners extends Component {
     super(props);
     this.state = {
       // Initial state goes here
-    };
+    }
   }
 
   dateCreated = (dateInput)=>{
@@ -70,7 +70,6 @@ class CarOwners extends Component {
                fullname = carOwnerProfile.details.firstname? carOwnerProfile.details.firstname +' '+ carOwnerProfile.details.lastname || '' : ''
                // thumbnail stuff
                if(carOwnerProfile.details.profile_thumbnail_image !== null){ // check if thumbnail exists
-                const backEndUrl = this.props.api_url.replace('driverbase.app/api','driverbase.app')
                 if(this.props.listAll) {
                     if(carOwnerProfile.details.profile_thumbnail_image.data === null) { 
                       thumbnail = '/default-profile.png' 
@@ -111,16 +110,17 @@ class CarOwners extends Component {
                 <li>
                   <div className="timeline-panel">
                    <div className="media me-2">
-                      <Link href={profile_url}><img alt="image" width={50} src={thumbnail} /></Link>
+                      <Link href={profile_url} onClick={this.props.handlePageChange}><img alt="image" width={50} src={thumbnail} /></Link>
                     </div>
                     <div className="media-body">
-                      <Link href={profile_url}><h5 className="mb-1" style={{textTransform:'capitalize'}}>{fullname}</h5></Link>
+                      <Link href={profile_url} onClick={this.props.handlePageChange}><h5 className="mb-1" style={{textTransform:'capitalize'}}>{fullname}</h5></Link>
                       <small className="d-block">{rating+' '}<span className='fa fa-star text-danger'></span><small>
                       &nbsp;&nbsp;{ratingsCount+' '}<span class="fa fa-comment-alt text-success"></span></small></small>
                     </div>
                     <div className="d-flex">
-                      <a className="contact-icon me-3" href="#"><i className="fa fa-car" aria-hidden="true" /></a>
-                      <Link href={profile_url} className="contact-icon" ><i className="fa fa-info text-info" /></Link>
+                      {/* <a className="contact-icon me-3" href="#"><i className="fa fa-car" aria-hidden="true" /></a> */}
+                      <Link style={{color:"darkcyan"}} className="contact-icon me-3" href={'/chat?uid='+userId} onClick={this.props.handlePageChange}><i className="fa fa-comment" aria-hidden="true" /></Link>
+                      <Link href={profile_url} className="contact-icon" onClick={this.props.handlePageChange}><i className="fa fa-info text-info" /></Link>
                     </div>
                   </div>
                 </li>

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ContentLoader from '../Includes/ContentLoader';
 import { Alert } from '@mui/material';
 import CopyAndWhatsAppButtons from '../Includes/CopyAndWhatsAppButtons';
+import { textHasPhoneNumber } from '@/Constants';
 const fakeStr1 = 'kahs3lahebblo2uwb00an~#va5lwi_ad_fgaljdj'; // security stuff
 const fakeStr2 ='klahewi_ad_fgalloanv;;aitalkjfajhsbbluwba==hn3vajd5j=+;'
  
@@ -18,6 +19,7 @@ class SignUpForm extends Component {
     };
     this.username = React.createRef();
     this.password = React.createRef();
+    this.phoneNumber = React.createRef();
 }
   
  handleChange = ()=>{
@@ -33,6 +35,8 @@ class SignUpForm extends Component {
     let user = {}
     const username = this.username.current.value;
     const password = this.password.current.value;
+    const phoneNumber = this.phoneNumber.current.value;
+
     if(username.length < 1 || password.length < 1){
         this.setState({
             error: <span class='text-danger'>username or password empty!</span> 
@@ -40,6 +44,12 @@ class SignUpForm extends Component {
         return
     }
     else{
+        if(!textHasPhoneNumber(phoneNumber)){
+            this.setState({
+                error: <span class='text-danger'>Please add a valid phone number!</span> 
+            })
+            return
+        }
         this.setState({
             error: <></>,
             errorExists: false
@@ -89,7 +99,7 @@ class SignUpForm extends Component {
                             gender:null,
                             age:null,
                             about:null,
-                            phone_number: null,
+                            phone_number: phoneNumber,
                             whatsapp_number:null,
                             address:{
                                 id:0,
@@ -115,7 +125,7 @@ class SignUpForm extends Component {
                             gender:null,
                             age:null,
                             about:null,
-                            phone_number: null,
+                            phone_number: phoneNumber,
                             whatsapp_number:null,
                             address:{
                                 id:0,
@@ -212,6 +222,11 @@ class SignUpForm extends Component {
                         <div className="form-group">
                             <label className="mb-1 text-white"><strong>Password</strong></label>
                             <input onChange={this.handleChange} type="password" ref={this.password} className="form-control"/>
+                        </div>
+                        
+                        <div className="form-group">
+                            <label className="mb-1 text-white"><strong>Phone Number</strong></label>
+                            <input onChange={this.handleChange} ref={this.phoneNumber}  type="tel" className="form-control" placeholder="Phone no." />
                         </div>
                         <div className="text-center mt-4">
                             <button disabled={this.state.submitting} onClick={this.handleSubmit} className="btn bg-white text-primary btn-block">{this.state.submittingText}</button>

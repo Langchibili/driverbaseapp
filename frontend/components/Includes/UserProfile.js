@@ -16,7 +16,7 @@ import { IconButton, Typography } from '@mui/material';
 import { Cancel, CancelOutlined, Check, CheckBoxRounded, CheckOutlined, Close, Recommend, RecommendRounded } from '@mui/icons-material';
 import Chip from '@mui/material/Chip';
 import Badge from '@mui/material/Badge';
-import { imageUrlFormat } from '@/Constants';
+import { backEndUrl, imageUrlFormat } from '@/Constants';
 import { useRouter } from 'next/router';
 
 
@@ -350,10 +350,10 @@ export default class UserProfile extends Component {
     // profile images stuff
     let cover_photo,profileCoverSrc 
     if(profileDetails.profile_cover_image !== null){
-        const backEndUrl = this.props.api_url.replace('driverbase.app/api','driverbase.app')
+        
         const coverPhotoUrl = imageUrlFormat(profileDetails.profile_cover_image,'large')
         cover_photo = backEndUrl+coverPhotoUrl
-        profileCoverSrc = this.props.api_url.replace('driverbase.app/api','driverbase.app') + profileDetails.profile_cover_image.url
+        profileCoverSrc = backEndUrl + profileDetails.profile_cover_image.url
     }
     else{
         cover_photo = profileCoverSrc = '/no-cover-photo.jpg' 
@@ -370,10 +370,9 @@ export default class UserProfile extends Component {
     let profile_photo,profilePhotoSrc 
 
     if(profileDetails.profile_thumbnail_image !== null){
-        const backEndUrl = this.props.api_url.replace('driverbase.app/api','driverbase.app')
         const profilePhotoUrl = imageUrlFormat(profileDetails.profile_thumbnail_image,'thumbnail')
         profile_photo =  backEndUrl+profilePhotoUrl  
-        profilePhotoSrc = this.props.api_url.replace('driverbase.app/api','driverbase.app') + profileDetails.profile_thumbnail_image.url
+        profilePhotoSrc = backEndUrl + profileDetails.profile_thumbnail_image.url
     }
     else{
         profile_photo = profilePhotoSrc = '/default-profile.png' 
@@ -635,11 +634,12 @@ function ImageViewModal(props) {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        maxWidth: '100%',
+        maxWidth: '95%',
         bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,
-      }
+        p: 3,
+      };
   return (
     <div onClick={props.handleImageModalClose}>
       <Modal
@@ -648,7 +648,7 @@ function ImageViewModal(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={ModalStyle}>
-          {props.showCover? <img src={props.profileCoverSrc}/>: <img src={props.profilePhotoSrc}/>} {/* This code allows full view of cover photos, to be released later as an update */} 
+          {/*props.showCover? <img src={props.profileCoverSrc}/>: <img src={props.profilePhotoSrc}/>*/} {/* This code allows full view of cover photos, to be released later as an update */} 
           <img src={props.profilePhotoSrc} width='100%'/>
           <IconButton onClick={props.handleImageModalClose} aria-label="cancel">
             <Cancel />

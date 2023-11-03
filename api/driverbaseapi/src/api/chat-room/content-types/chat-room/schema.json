@@ -13,7 +13,8 @@
   "pluginOptions": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
     "participants": {
       "type": "relation",
@@ -24,6 +25,19 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::message.message"
+    },
+    "recent_message_text": {
+      "type": "string"
+    },
+    "messagesCount": {
+      "type": "biginteger",
+      "default": "0"
+    },
+    "alias": {
+      "type": "string"
+    },
+    "chat_thumbnail": {
+      "type": "json"
     }
   }
 }

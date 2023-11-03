@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { imageUrlFormat } from '@/Constants';
+import { backEndUrl, imageUrlFormat } from '@/Constants';
 import Link from 'next/link';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -88,6 +88,10 @@ export default class Drivers extends Component {
     return <Link style={{color:"cadetblue"}} className="contact-icon me-3" href={'/drivers/'+driverCategory} onClick={this.props.handlePageChange}><i className="fa fa-truck" aria-hidden="true" /></Link>
   }
 
+  renderChatLink = (userId)=>{
+    return <Link style={{color:"darkcyan"}} className="contact-icon me-3" href={'/chat?uid='+userId} onClick={this.props.handlePageChange}><i className="fa fa-comment" aria-hidden="true" /></Link>
+  }
+
   enlistDriverButtons = (userId)=>{
     return (<div>
             <Button disabled={this.props.submitting} onClick={()=>{ this.props.enlistDriver(userId)}}>Enlist Driver</Button>
@@ -122,7 +126,6 @@ export default class Drivers extends Component {
                 fullname = driverProfile.details.firstname? driverProfile.details.firstname +' '+ driverProfile.details.lastname || '' : ''
                 // THUMBNAIL
                 if(driverProfile.details.profile_thumbnail_image !== null){ // check if thumbnail exists
-                    const backEndUrl = this.props.api_url.replace('driverbase.app/api','driverbase.app')
                     if(this.props.listAll) {
                         if(driverProfile.details.profile_thumbnail_image.data === null) { 
                           thumbnail = '/default-profile.png' 
@@ -176,7 +179,8 @@ export default class Drivers extends Component {
                         {/* <RatingDisplay rating={rating}/> */}
                         </div>
                         <div className="d-flex">
-                          {this.renderDriverCategory(driverProfile.driver_category)}
+                          {/* {this.renderDriverCategory(driverProfile.driver_category)} */}
+                          {this.renderChatLink(userId)}
                           {this.renderDriverNumber(profile_url,this.handleDialogOpen)}
                         </div>
                       </div>

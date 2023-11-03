@@ -1,0 +1,19 @@
+// when chat is loaded with uid = 0
+     check if the loggedInUser has any chatrooms existing
+        id so
+           the user's chatrooms should be shown
+    if you are the other user from (uid), check if any of the chatrooms you have have messages in them
+        if so, show the chatroom on your list of chatrooms
+        if not, don't show the chatroom
+        if the chatroom without messages is the only one existing, show a users search screen
+   when the chat is loaded with a uid and hence u load the chatroom with the uid
+        if it exits, show messages, because it means they are some messages in it
+        if not, then create a new chatroom, link it to both users
+        then create a message and push it into the chatroom
+   if a message is of normal type, just post it, then add it just add to to the chatroom with the messages count going up by 1
+   if user wants to send media, they have to send from what they added to their profile, no new media uploads from chatroom
+
+   whether you have messages to a chatroom or not doesn't matter to the creation of massages
+   and to the showcase of messages
+
+   shouldn't forget to put the default images inside the uploads directory of the api

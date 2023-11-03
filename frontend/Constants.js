@@ -1,23 +1,41 @@
-// let api_uri
-// const ENV = process.env.NODE_ENV
-// api_uri =  process.env.REMOTE_API_URL
-// if(ENV === 'production'){
-//    api_uri =  process.env.REMOTE_API_URL
-// }
-// else{
-//    api_uri = process.env.LOCAL_API_URL
-// }\
-// return data as props object
-// jwt stuff
-
 const fakeStr1 = 'kahs3lahebblo2uwb00an~#va5lwi_ad_fgaljdj'; // security stuff
 const fakeStr2 ='klahewi_ad_fgalloanv;;aitalkjfajhsbbluwba==hn3vajd5j=+;'
-  /*localhost: */ export const api_url = 'http://localhost:1337/api'
- // /*localhost: */ export const api_url = 'http://168.43.207:1337/api'
+  
+ /*localhost: */ export const environment = 'local'
+ ///*liveserver: */ export const environment = 'live'
+ // /*testserver: */ export const environment = 'test'
 
- // /*liveserver: */ export const api_url = 'https://api.driverbase.app/api' // for production's sake
+ let apiurl, backendUrl
+ if(environment === 'local'){
+   /*localhost: */  apiurl = 'http://localhost:1337/api'
+ }
+ else if(environment === 'live'){
+   /*liveserver: */ apiurl = 'https://api.driverbase.app/api' // for production's sake
+ }
+ else if(environment === 'test'){
+  /*testserver: */  apiurl = 'https://testapi.driverbase.app/api' // the api to be used when deployed to the test site
+ }
+ else{
+    /*liveserver: */ apiurl = 'https://api.driverbase.app/api' // for production's sake
+ }
 
- // /*testserver: */ export const api_url = 'https://testapi.driverbase.app' // the api to be used when deployed to the test site
+ // for removing the api part when handling /uploads and the like
+ if(environment === 'local'){
+  /*localhost: */  backendUrl = apiurl.replace('http://localhost:1337/api','http://localhost:1337')
+ }
+ else if(environment === 'live'){
+  /*liveserver: */ backendUrl =  apiurl.replace('driverbase.app/api','driverbase.app') // for production's sake
+ }
+ else if(environment === 'test'){
+  /*testserver: */ backendUrl =  apiurl.replace('testapi.driverbase.app/api','testapi.driverbase.app') // the api to be used when deployed to the test site
+ }
+ else{
+  /*liveserver: */ backendUrl =  apiurl.replace('driverbase.app/api','driverbase.app') // for production's sake
+ }
+
+// export the urls
+export let api_url = apiurl
+export let backEndUrl = backendUrl
 
 export function getJwt(){
     userHasConnection() // check the internet connection
@@ -123,7 +141,6 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
       }).then(response => response.json())
         .then(data => data)
         .catch(error => console.error(error))
-
     if(user === undefined) return 'not-found' // means couldn't connect well, so leave u logged out
     if('error' in user) return 'not-found' //it means you are looged out
     //.catch(error => return 'logged-out')
@@ -157,7 +174,7 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
  } 
   
   export const imageUrlFormat = (image,formatWanted)=>{
-    if(image === undefined || image === null) return '/default-profile.png' 
+    if(image === undefined || image === null) return '/uploads/default-profile.png' 
     
     if(formatWanted === 'original'){
       return image.url
@@ -169,9 +186,9 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
     }
     if(!image.url){
         if(formatWanted === 'cover'){
-          return '/no-cover-photo.jpg'
+          return '/uploads/no-cover-photo.jpg'
         }
-        return '/default-profile.png' 
+        return '/uploads/default-profile.png' 
     }
     return image.url
   }

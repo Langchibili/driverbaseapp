@@ -16,13 +16,17 @@ class SideNav extends Component {
   renderLoggedInLinks  = ()=>{
           if(this.props.loggedInUserProfile === 'logged-out') return <></>
           if(this.props.loggedInUserProfile.type === 'driver'){
-             return <li><Link onClick={this.props.handlePageChange} href="/points">Buy Points(JAPs)</Link></li> 
+             return (<>
+                <li><Link onClick={this.props.handlePageChange} href="/points">Buy Points(JAPs)</Link></li>
+                <li><Link onClick={this.props.handlePageChange} href="/chat?uid=0">Chat</Link></li>  
+                </>)
           }
           return (
             <><li><Link onClick={this.props.handlePageChange} href="/jobs?act=add">Create Job</Link></li>
             <li><Link onClick={this.props.handlePageChange} href="/jobs?act=edit">Edit Jobs</Link></li>
             <li><Link onClick={this.props.handlePageChange} href="/jobs?act=delete">Delete Jobs</Link></li> 
             <li><Link onClick={this.props.handlePageChange} href="/points">Buy Points(JCPs)</Link></li> 
+            <li><Link onClick={this.props.handlePageChange} href="/chat?uid=0">Chat</Link></li> 
           </>
           )
   }
@@ -40,7 +44,7 @@ class SideNav extends Component {
                 <li><Link onClick={this.props.handlePageChange} href="/jobs?act=show-all">Jobs</Link></li>
                 <li><Link onClick={this.props.handlePageChange} href="/drivers">All Drivers</Link></li>
                 <li><Link onClick={this.props.handlePageChange} href="/car_owners">All CarOwners</Link></li>
-               {this.renderLoggedInLinks()} 
+                {this.renderLoggedInLinks()} 
                 <li><Link onClick={this.props.handlePageChange} href="/ask">Help</Link></li>
                 <li><Link onClick={this.props.handlePageChange} href="/about">About Us</Link></li>
               </ul>

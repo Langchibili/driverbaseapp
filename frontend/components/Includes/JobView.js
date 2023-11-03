@@ -4,7 +4,7 @@ import Link from 'next/link';
 import ContentLoader from './ContentLoader';
 import List from '../Lists/List';
 import Alert from '@mui/material/Alert'; 
-import { getJwt, imageUrlFormat, minimal_car_owner_populate_url, minimal_driver_populate_url } from '@/Constants';
+import { backEndUrl, getJwt, imageUrlFormat, minimal_car_owner_populate_url, minimal_driver_populate_url } from '@/Constants';
 
 export default class JobView extends React.Component {
   constructor(props) {
@@ -164,7 +164,6 @@ export default class JobView extends React.Component {
     const rating = carOwnerProfile.average_rating? carOwnerProfile.average_rating : ''
     let thumbnail,thumbnailUrl // to be filled later
     // the thumbnail stuff
-     const backEndUrl = this.props.api_url.replace('driverbase.app/api','driverbase.app')
     if(carOwnerProfile.profile_thumbnail_image.data === null) { 
       thumbnail = '/default-profile.png' 
     }
