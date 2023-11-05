@@ -7,7 +7,7 @@ import HtmlHead from '@/components/Meta/HtmlHead';
 import HtmlFoot from '@/components/Meta/HtmlFoot';
 import ChatHome from '@/components/ChatApp/ChatHome';
 import { getLoggedInUserWithChatData } from '@/Constants';
-import { Html } from 'next/document';
+
 
 export default function Chat() {
     const router = useRouter();
@@ -29,6 +29,6 @@ export default function Chat() {
     if(data.loggedInUserProfile === 'logged-out') window.location = '/login' // you should re-log in
     // uid !== 0 because if a user opens chat app without setting a uid, then user has not selected a chat
     uid = parseInt(uid) // has to be a number not a string as in, 0 not '0'
-    return ( <html lang="en" dir="ltr" class="group" data-theme-color="green" data-mode="dark"><div style={{maxWidth:'800px',margin:'0 auto'}}><ChatHome loggedInUserProfile={data.loggedInUserProfile} uid={uid} chatSelected={uid !== 0}/></div></html>
+    return ( <html lang="en" dir="ltr" className="group" data-theme-color="green" data-mode="dark"><div style={{maxWidth:'800px',margin:'0 auto'}}><ChatHome loggedInUserProfile={data.loggedInUserProfile} uid={uid} chatSelected={uid !== 0}/></div></html>
   )
 }

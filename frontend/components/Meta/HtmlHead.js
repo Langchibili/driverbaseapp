@@ -11,7 +11,7 @@ class HtmlHead extends Component {
       windowLoaded: false,
       linkClicked: false,
       loggedInUserProfile: 'logged-out',
-      pageDescription: "driverbase | your number one portal for finding jobs as a driver",
+      pageDescription: "DriverBase | Your number one portal for finding jobs as a driver",
       pageImage: "/DriverBaseTransparentBackground.png"
     };
   }
@@ -83,6 +83,7 @@ class HtmlHead extends Component {
               <link href="/cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet" />
               <link href="/template/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
               <link href="/template/css/style.css" rel="stylesheet" />
+              <link rel="manifest" href="/manifest.json" />
               {/* <link href="/template/vendor/jquery-smartwizard/dist/css/smart_wizard.min.css" rel="stylesheet"/> */}
               {/* <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
               <meta http-equiv="Pragma" content="no-cache" />

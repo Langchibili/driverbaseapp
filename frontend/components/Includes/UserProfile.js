@@ -575,7 +575,7 @@ function PhoneNumberDialog(props) {
           <DialogContent>
             <DialogContentText>
               Contact Details Like Phone numbers ad Emails for drivers are only accessible to registered car owners, 
-              in order to view this driver's phone number, 
+              in order to view this user's phone number, 
               create an account as a car owner or log into an already existing car owner account
             </DialogContentText>
           </DialogContent>

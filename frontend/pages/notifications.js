@@ -1,10 +1,7 @@
-import UpAndBackButton from '@/components/Includes/UpAndBackButton';
-import CopyAndWhatsAppButtons from '@/components/Includes/CopyAndWhatsAppButtons';
-
-export default function Points() {
+export default function Notifications() {
+   
     return (
     <>
-    <UpAndBackButton/>
     <div style={{width:'100%',textAlign:'center',padding:5}}>
         <p style={{fontFamily:"Helvetica"}}>
             Points can be used to <strong>Chat with others</strong> like <strong>A driver with a car owner</strong> and points can also be used to read reviews written about a user.

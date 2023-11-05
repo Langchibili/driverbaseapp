@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import HtmlHead from '@/components/Meta/HtmlHead'
 import HtmlFoot from '@/components/Meta/HtmlFoot'
 import LoginForm from '@/components/Forms/LoginForm';

@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Head from 'next/head';
+
 export default function HtmlHead(){
    return (
     <Head>
@@ -11,6 +12,8 @@ export default function HtmlHead(){
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         {/* App favicon */}
         <link rel="shortcut icon" href="/DriverBaseTransparentBackground.png" />
+        <link rel="manifest" href="/manifest.json"/>
+
         {/* magnific-popup css */}
         {/* owl.carousel css */}
         <link rel="stylesheet" href="/chatapp-assets/assets/css/tailwind2.css" />

@@ -1,4 +1,3 @@
-import React from 'react';
 import UpAndBackButton from '@/components/Includes/UpAndBackButton';
 import CopyAndWhatsAppButtons from '@/components/Includes/CopyAndWhatsAppButtons';
 import { Alert, Typography } from '@mui/material';
@@ -39,7 +38,7 @@ export default function Payments() {
         </div>
         <p style={{color:'blue',marginBottom:10,fontFamily:"Helvetica"}}><Typography component="legend">After making payments, you can come back to this page to text us</Typography></p>
 
-        <div style={{maxWidth:500,margin:'0 auto',fontFamily:"Helvetica"}}><CopyAndWhatsAppButtons buttonText="Text Us On WhatsApp" info={<><></>To make sure we consider your payment, you must send a whatsapp message with proof to: <strong><span id="copyNumber">+260966213952</span></strong></>}/> 
+        <div id="textusonwhatsapp" style={{maxWidth:500,margin:'0 auto',fontFamily:"Helvetica"}}><CopyAndWhatsAppButtons buttonText="Text Us On WhatsApp" info={<><></>To make sure we consider your payment, you must send a whatsapp message with proof to: <strong><span id="copyNumber">+260966213952</span></strong></>}/> 
         
         {/* you must send proof stuff */}
         <Alert severity='warning'><strong>You must send us a screenshot of the transaction, as proof of payment, otherwise we will not consider your payment.<br/> Along with proof of payment, send your <strong>username</strong>. And please note that any mistakes you make in your transactions, we are not responsible and we shall not refund.</strong></Alert></div>
@@ -122,7 +121,8 @@ export default function Payments() {
                     And you tell us what your <strong>username</strong> is so that we grant you the points. 
                     To ensure that you do not miss important replies from other users, make sure you buy enough points before you chat with anyone
                 </p>
-                <CopyAndWhatsAppButtons buttonText="Text Us On WhatsApp" info={<>To buy points, please send a whatsapp message with proof to: <strong><span id="copyNumber">+260966213952</span></strong></>}/>
+                
+                <div><a href='#textusonwhatsapp' style={{display:'block', width:'50%',margin:'5px auto 0 auto', padding:5,border:'1px solid green',fontWeight:600, borderRadius:4, color:'green'}}>Text Us The Payment Proof</a></div>
                 <div><a href='#top'  style={{display:'block', width:'50%',margin:'5px auto 0 auto', padding:5,border:'1px solid green', borderRadius:4, color:'green'}}>Go Back Up</a></div>
                 
         </div>
@@ -131,3 +131,31 @@ export default function Payments() {
     </>
   )
 }
+
+// if ('Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window) {
+//     Notification.requestPermission()
+//       .then(permission => {
+//         if (permission === 'granted') {
+//           return navigator.serviceWorker.ready;
+//         }
+//       })
+//       .then(registration => {
+//         if (registration) {
+//           return registration.pushManager.getSubscription();
+//         }
+//       })
+//       .then(subscription => {
+//         // Check if a subscription exists; if not, you can subscribe the user
+//         if (!subscription) {
+//           return registration.pushManager.subscribe({ userVisibleOnly: true });
+//         }
+//       })
+//       .then(newSubscription => {
+//         // The newSubscription object now contains the notification token
+//         console.log('Notification Token:', newSubscription.endpoint);
+//       })
+//       .catch(error => {
+//         // An error occurred while getting the notification token
+//       });
+//   }
+  

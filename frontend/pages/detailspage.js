@@ -47,7 +47,7 @@ class UnlockDetails extends React.Component{
             errorExists: false
         }
     }
-    async componentDidMount(){
+    async componentDidMount(){ //Langson Chibili account to test
         const uid = this.props.uid // the userid who's number we ought to get
         const loggedInUserProfile = this.props.loggedInUserProfile
         console.log(uid,loggedInUserProfile)

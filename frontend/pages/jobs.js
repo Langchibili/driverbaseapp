@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import HtmlHead from '@/components/Meta/HtmlHead'
 import HtmlFoot from '@/components/Meta/HtmlFoot'
 import JobsAddForm from '@/components/Forms/JobsAddForm';
@@ -14,7 +14,6 @@ import Link from 'next/link';
 
 function renderJobView(act,data,jid){
   if(act === 'show'){
-    console.log('logged in user from jobview>',data.loggedInUserProfile)
     return <JobView 
               jid={jid} 
               api_url={api_url} 

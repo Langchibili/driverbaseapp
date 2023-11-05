@@ -7,16 +7,6 @@ import PageLoader from '@/components/Includes/PageLoader'
 import ContentLoader from '@/components/Includes/ContentLoader'
 import UpAndBackButton from '@/components/Includes/UpAndBackButton';
 
-
-// const navigator = ()=>{
-//   if(stack.length === 1){
-
-//   }
-
-//   job
-//   home
-// }
-
 export default function Home() {
   const [data, setData] = React.useState({
     loading: true,

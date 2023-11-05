@@ -1,5 +1,6 @@
 import * as React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import { registerServiceWorker } from '@/Constants';
 
 export default function ContentLoader(props) {
   return (<div style={{ position:'fixed', height:'100%', width:'100%',margin:'0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

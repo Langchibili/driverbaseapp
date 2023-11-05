@@ -78,7 +78,7 @@ class JobsAddForm extends Component {
         error: "You cannot add a phone number into the job description. Please remove the phone number to post the job."
       })
       return
-    }
+    }           
     
     if(textHasPhoneNumber(title)){
       this.setState({
@@ -146,7 +146,6 @@ class JobsAddForm extends Component {
       <div>
         <div className="post-input">
           <input type='text' onChange={this.getTitle} className='form-control sm-transparent' placeholder='Title of Job'/>
-          <p  className='text text-warning' id="demo-simple-select-label"> DO NOT INCLUDE PHONE NUMBERS IN YOUR DESCRIPTION!!!</p>
           <textarea
             name="jobBody"
             id="jobBody"
@@ -170,7 +169,7 @@ class JobsAddForm extends Component {
           <MenuItem value="part-time">PartTime</MenuItem>
         </Select>
         
-        <p className='text text-info' id="demo-simple-select-label">How much will this job pay? We will show a range of 1500 to 25000 if not set.</p>
+        <p className='text text-info' id="demo-simple-select-label"><strong>How much will this job pay? We will show a range of 1500 to 25000 if not set.</strong></p>
         <input type='text' onChange={this.setPay} className='form-control sm-transparent' placeholder='Pay of Job'/>
           
           {/* {this.state.newJob !== null? <ImageUploader  
@@ -182,7 +181,7 @@ class JobsAddForm extends Component {
                   image={this.imageThumbnail()}
                   jwt={this.props.jwt}/> : <></>} */}
 
-          {error && <div className="text-danger">{error}</div>}
+          {error && <div className="text-warning" style={{marginBottom:'5px'}}>{error}</div>}
           <button disabled={this.state.submitting} onClick={this.handleSubmit} className="btn btn-primary">{this.state.submittingText}</button>
         </div>
       </div>

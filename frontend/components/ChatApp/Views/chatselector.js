@@ -24,7 +24,7 @@ export default class ChatSelector extends Component {
         {/* <div className="px-6 pb-6" dir="ltr">
           <div className="owl-carousel owl-theme owl-loaded owl-drag" id="user-status-carousel">
             <div className="owl-stage-outer">
-              <div className="owl-stage" style={{"-webkit-transform":"translate3d(0px, 0px, 0px)","-ms-transform":"translate3d(0px, 0px, 0px)","transform":"translate3d(0px, 0px, 0px)","-webkit-transition":"all 0s ease 0s","transition":"all 0s ease 0s","width":"574px"}}>
+              <div className="owl-stage" style={{"WebkitTransform":"translate3d(0px, 0px, 0px)","-ms-transform":"translate3d(0px, 0px, 0px)","transform":"translate3d(0px, 0px, 0px)","-webkit-transition":"all 0s ease 0s","transition":"all 0s ease 0s","width":"574px"}}>
                        <Chats type="fav"
                               chats={this.props.loggedInUserProfile.chatRooms} 
                               loggedInUserProfile={this.props.loggedInUserProfile}
@@ -60,7 +60,7 @@ export default class ChatSelector extends Component {
                 <div className="simplebar-track simplebar-horizontal" style={{"visibility":"hidden"}}>
                 <div className="simplebar-scrollbar" style={{"width":"0px","display":"none"}} /></div>
                 <div className="simplebar-track simplebar-vertical" style={{"visibility":"hidden"}}>
-               <div className="simplebar-scrollbar" style={{"height":"0px","-webkit-transform":"translate3d(0px, 134px, 0px)","-ms-transform":"translate3d(0px, 134px, 0px)","transform":"translate3d(0px, 134px, 0px)","display":"none"}} /></div></div>
+               <div className="simplebar-scrollbar" style={{"height":"0px","WebkitTransform":"translate3d(0px, 134px, 0px)","-ms-transform":"translate3d(0px, 134px, 0px)","transform":"translate3d(0px, 134px, 0px)","display":"none"}} /></div></div>
             </div>
       </div>  
    </div>

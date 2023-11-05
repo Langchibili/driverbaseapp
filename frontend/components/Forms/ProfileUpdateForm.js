@@ -682,7 +682,7 @@ class ProfileUpdateForm extends Component {
                         <div className="form-group">
                         <label>Province &nbsp;</label>
                         <select ref={this.province} >
-                            <option value="">-- Select a city or town --</option>
+                            <option value="">-- Select a Province --</option>
                             <option value="central">Central</option>
                             <option value="copperbelt">Copperbelt</option>
                             <option value="eastern">Eastern</option>

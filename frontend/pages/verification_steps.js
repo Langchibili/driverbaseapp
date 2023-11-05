@@ -1,5 +1,4 @@
 import UpAndBackButton from '@/components/Includes/UpAndBackButton';
-import React from 'react';
 import CopyAndWhatsAppButtons from '@/components/Includes/CopyAndWhatsAppButtons';
 
 export default function verificationSteps() {

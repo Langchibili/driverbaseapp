@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import HtmlHead from '@/components/Meta/HtmlHead'
 import HtmlFoot from '@/components/Meta/HtmlFoot'

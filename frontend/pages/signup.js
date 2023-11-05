@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import HtmlHead from '@/components/Meta/HtmlHead'
 import HtmlFoot from '@/components/Meta/HtmlFoot'
 import SignUpForm from  '@/components/Forms/SignUpForm'
@@ -8,8 +8,6 @@ import UpAndBackButton from '@/components/Includes/UpAndBackButton';
 
 export default function signup(props) {
     const [userType, setType] = React.useState({typeSet: false, type: 'driver'});
-
-
     const renderDriverSignUpForm = (e)=>{
         setType({typeSet: true, type: 'driver'});
     }

@@ -1,3 +1,15 @@
+  // Import the functions you need from the SDKs you need
+  // import { initializeApp } from "firebase/app";
+  // import { getMessaging } from "firebase/messaging";
+  //import { getAnalytics } from "firebase/analytics";
+// import firebase from 'firebase/app';
+// import 'firebase/messaging';
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+  
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 const fakeStr1 = 'kahs3lahebblo2uwb00an~#va5lwi_ad_fgaljdj'; // security stuff
 const fakeStr2 ='klahewi_ad_fgalloanv;;aitalkjfajhsbbluwba==hn3vajd5j=+;'
   
@@ -206,3 +218,93 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
     // Use the test method to check if the text contains an email address
     return emailRegex.test(text);
   }
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA0Gp0e5DK84iozOnIfYBSSmtlZFZZByz8",
+  authDomain: "driverbase-65205.firebaseapp.com",
+  projectId: "driverbase-65205",
+  storageBucket: "driverbase-65205.appspot.com",
+  messagingSenderId: "452305251845",
+  appId: "1:452305251845:web:e0b0da38a105f0ec8a366c",
+  measurementId: "G-QK39TGPLYC"
+}
+
+// Initialize Firebase
+// export const firebaseApp  = initializeApp(firebaseConfig);
+// const messaging = getMessaging(firebaseApp);
+// console.log(messaging)
+// if (!firebase.apps.length) {
+//   firebase.initializeApp(firebaseConfig);
+// }
+//export const messaging = firebase.messaging();
+
+// export const checkNotificationsSupport = ()=>{
+//   if ('Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window) {
+//       return true
+//   }
+//   return false
+// }
+
+// export const getNoticationToken = ()=>{
+//   let serviceRegistration
+//   if(!checkNotificationsSupport) return
+//   Notification.requestPermission()
+//       .then(permission => {
+//         if (permission === 'granted') {
+//           return navigator.serviceWorker.ready;
+//         }
+//       })
+//       .then(registration => {
+//         serviceRegistration = registration
+//         if (registration) {
+//           return registration.pushManager.getSubscription();
+//         }
+//       })
+//       .then(subscription => {
+//         // Check if a subscription exists; if not, you can subscribe the user
+//         if (!subscription) {
+//           return serviceRegistration.pushManager.subscribe({ userVisibleOnly: true, applicationSeverKey: 'BPmgbPwPQNl52hz_UQkmlpqlBUo_0R76Zo2VeiNvkgB1m-UuAG30lwoXBF9ZUikFzEDSMTFV1UwVdJZ4SeKV6VA' });
+//         }
+//       })
+//       .then(newSubscription => {
+//         // The newSubscription object now contains the notification token
+//         console.log('Notification Token:', newSubscription.endpoint);
+//       })
+//       .catch(error => {
+//         // An error occurred while getting the notification token
+//         console.log(error)
+//       })
+  
+// }
+
+
+// export const registerServiceWorker = ()=>{ // loaded in the _app.js root component for nextjs 
+//   if ('serviceWorker' in navigator) {
+//     navigator.serviceWorker.register('/driverbase-service-worker.js')
+//       .then(registration => {
+//         console.log('Service Worker registered with scope:', registration.scope);
+//       })
+//       .catch(error => {
+//         console.error('Service Worker registration failed:', error);
+//       });
+//   }
+
+
+
+//   if ('standalone' in window.navigator && window.navigator.standalone) {
+//     // The web app is already installed and launched from the home screen.
+//   } else {
+//     // Prompt the user to add the app to the home screen.
+//     const addToHomeScreen = document.createElement('div');
+//     addToHomeScreen.innerHTML = 'Install To Home Screen';
+//     addToHomeScreen.addEventListener('click', () => {
+//       // Provide instructions to the user.
+//     });
+//     document.body.appendChild(addToHomeScreen);
+//   }
+
+// }
+
+// "@react-spring/web": "^9.7.3",
+//     "firebase": "^10.5.2",

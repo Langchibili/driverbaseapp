@@ -1,5 +1,4 @@
 import UpAndBackButton from '@/components/Includes/UpAndBackButton';
-import React from 'react';
 import Alert from '@mui/material/Alert'; 
 export default function About() {
     return (

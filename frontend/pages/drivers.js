@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import HtmlHead from '@/components/Meta/HtmlHead'
 import HtmlFoot from '@/components/Meta/HtmlFoot'
 import ItemListAll from '@/components/Lists/ItemListAll';
-import { api_url,minimal_driver_populate_url,getJwt, getLoggedInUserData } from '@/Constants';
-import { useRouter } from 'next/router';
+import { api_url, getLoggedInUserData } from '@/Constants';
 import PageLoader from '@/components/Includes/PageLoader';
 import ContentLoader from '@/components/Includes/ContentLoader';
 import UpAndBackButton from '@/components/Includes/UpAndBackButton';
