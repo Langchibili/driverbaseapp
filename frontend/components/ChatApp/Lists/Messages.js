@@ -12,7 +12,7 @@ export default function Messages(props){
              return <Message key={message.id} message={message} {...props} />
        })
     }
-    <div id="messages-start" style={{minHeight:'50px',marginTop:"50px"}}></div>
+    <div id="messages-start" style={{minHeight:'50px',marginBottom:"250px"}}></div>
  </ul>
   )
 }

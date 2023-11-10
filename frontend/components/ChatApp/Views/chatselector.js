@@ -8,6 +8,9 @@ export default class ChatSelector extends Component {
     this.state = {
     }
   }
+  componentDidUpdate(){
+    if(this.props.refleshChat) this.props.stopChatReflesh() // avoid reflesh loop after chat update
+  }
   render() {
     return (
     <div style={{height:'1000px'}} className="chat-leftsidebar lg:w-[100%] group-data-[theme-color=violet]:bg-slate-50 group-data-[theme-color=green]:bg-green-50/20 group-data-[theme-color=red]:bg-red-50/20 shadow overflow-y-hidden mb-[80px] lg:mb-0 group-data-[theme-color=violet]:dark:bg-zinc-700 group-data-[theme-color=green]:dark:bg-zinc-700 group-data-[theme-color=red]:dark:bg-zinc-700">

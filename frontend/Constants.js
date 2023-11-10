@@ -14,7 +14,7 @@ const fakeStr2 ='klahewi_ad_fgalloanv;;aitalkjfajhsbbluwba==hn3vajd5j=+;'
  ///*liveserver: */ export const environment = 'live'
  // /*testserver: */ export const environment = 'test'
 
- let apiurl, backendUrl
+ let apiurl, backendUrl, socketurl
  if(environment === 'local'){
    /*localhost: */  apiurl = 'http://localhost:1337/api'
  }
@@ -42,9 +42,26 @@ const fakeStr2 ='klahewi_ad_fgalloanv;;aitalkjfajhsbbluwba==hn3vajd5j=+;'
   /*liveserver: */ backendUrl =  apiurl.replace('driverbase.app/api','driverbase.app') // for production's sake
  }
 
+
+if(environment === 'local'){
+  /*localhost: */  socketurl = 'http://localhost:3002'
+}
+else if(environment === 'live'){
+  /*liveserver: */ socketurl = 'https://socket.driverbase.app' // for production's sake
+}
+else if(environment === 'test'){
+ /*testserver: */  socketurl = 'https://testsocket.driverbase.app' // the api to be used when deployed to the test site
+}
+else{
+   /*liveserver: */ socketurl = 'https://socket.driverbase.app' // for production's sake
+}
+
+
+
 // export the urls
 export let api_url = apiurl
 export let backEndUrl = backendUrl
+export let socketUrl = socketurl
 
 export function getJwt(){
     userHasConnection() // check the internet connection
@@ -216,6 +233,9 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
     return emailRegex.test(text);
   }
 
+  export function emitEvent(socket,eventType, data){ // an even emitting function for sockets
+    socket.emit(eventType, data)
+  } 
 
 export default function sendNotification(title,body,target,publish_status="publish",type="single",payload="",image="https://driverbase.app/DriverBaseTransparentBackground.png"){
   const targetType = type === "single"? "tokens" : "topics"

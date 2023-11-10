@@ -40,7 +40,7 @@ export default class ChatRoomHeader extends React.Component{
     render(){
      if(this.state.profileDetails === null) return <></>
      return (
-        <div className="p-4 border-b border-gray-100 lg:p-6 dark:border-zinc-600">
+        <div className="p-4 border-b border-gray-100 lg:p-6 dark:border-zinc-600" style={{position:"fixed",maxWidth:"800px",margin:'0 auto',top:"0px",left:"0",right:"0",zIndex:"1",backgroundColor: "#262E35"}}>
         <div className="grid items-center grid-cols-12">
         <div className="col-span-8 sm:col-span-4">
             <div className="flex items-center">

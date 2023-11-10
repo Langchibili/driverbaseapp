@@ -5,7 +5,9 @@ import SearchUsers from './Views/search_users';
 import HtmlHead from './Meta/HmtlHead';
 import HtmlFoot from './Meta/HtmlFoot';
 import ContentLoader from '../Includes/ContentLoader';
-import { api_url, getJwt } from '@/Constants';
+import { api_url, getJwt, getLoggedInUserWithChatData, socketUrl } from '@/Constants';
+import { io } from "socket.io-client";
+const socket = io(socketUrl); // SOCKET STUFF
 
 export default class ChatHome extends Component {
   constructor(props) {
@@ -18,11 +20,32 @@ export default class ChatHome extends Component {
         hasChats: null,
         checkedChatRoom: false,
         selectUsers: false,
+        refleshChat: false,
         chatSelected: this.props.chatSelected 
     }
   }
 
-  componentDidMount() {
+  // getCall(socket){
+  //   const clientId =  getClientId()
+  //   socket.on(clientId, (arg)=>{
+  //     console.log('I am client with Id'+clientId+' '+arg)
+  //   })
+  // }
+  
+   componentDidMount() {
+    // emitEvent(socket,'new-deposit', 1)
+    socket.on('msgfor'+this.props.loggedInUserProfile.id, async (data)=>{ // handle message reception stuff
+      console.log('a new message arrived',data)
+      const loggedInUserProfile = await getLoggedInUserWithChatData() 
+      if(loggedInUserProfile === 'logged-out') return // means either you have a connection problem or your token has expired
+      this.setState({ // new data
+        chats: loggedInUserProfile.chatRooms.filter((chatRoom)=> parseInt(chatRoom.messagesCount) !== 0),
+        chatRooms: loggedInUserProfile.chatRooms, 
+        refleshChat: true
+      })
+    })
+   //this.getCall(socket) // the the client
+
     console.log('for reference to user object',this.props.loggedInUserProfile)
     if(!this.props.chatSelected){ // because this.props.uid === 0
       if(this.props.loggedInUserProfile.chatRooms.length === 0){
@@ -127,6 +150,11 @@ export default class ChatHome extends Component {
       this.forceUpdate()
     })
   }
+  stopChatReflesh = ()=>{
+    this.setState({
+      refleshChat: false
+    })
+  }
 
   renderChatScreen = ()=>{
     if(this.state.hasChats === null) return <ContentLoader text="Loading..."/>
@@ -140,14 +168,19 @@ export default class ChatHome extends Component {
                   chats={this.state.chats}
                   toggleChatSelect={this.handleChatOpen}
                   toggleSelectUsers={this.toggleSelectUsers}
+                  refleshChat={this.state.refleshChat}
+                  stopChatReflesh={this.stopChatReflesh}
                   />
     }
     else{
       if(!this.state.checkedChatRoom) return <ContentLoader text="Opening chat..."/>
       return <ChatRoom 
+                   socket={socket}
                    {...this.props}
                    chatRoom={this.state.chatRoom} 
                    toggleChatSelect={this.toggleChatSelect}
+                   refleshChat={this.state.refleshChat}
+                   stopChatReflesh={this.stopChatReflesh}
                    />
     }
   }
@@ -156,4 +189,3 @@ export default class ChatHome extends Component {
     return <><HtmlHead/>{this.renderChatScreen()}<HtmlFoot/></>
   }
 }
-

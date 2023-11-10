@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { api_url, getJwt, getUserProfileUid } from '@/Constants';
+import { api_url, emitEvent, getJwt, getUserProfileUid } from '@/Constants';
 import ContentLoader from '@/components/Includes/ContentLoader';
 import { Alert, Button } from '@mui/material';
 import Messages from '../Lists/Messages';
 import ChatRoomFooter from '../Parts/ChatRoomFooter';
 import ChatRoomHeader from '../Parts/ChatRoomHeader';
+import { useRouter } from 'next/router';
 
 export default class ChatRoom extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ export default class ChatRoom extends Component {
         messageContent: null,
         messagesLoaded: false,
         userProfile: null,
+        lastDiv: null,
         messages: []
     }
   }
@@ -112,7 +114,8 @@ export default class ChatRoom extends Component {
     this.setState({
         messages: messages.data.attributes.messages.data,
         userProfile: userProfile, // then now you can add the other user to the state
-        messagesLoaded: true
+        messagesLoaded: true,
+        lastDiv: document.getElementById('messages-start')
     })
  }
 
@@ -170,7 +173,8 @@ export default class ChatRoom extends Component {
                 this.setState({
                     chatRoom: newChatRoom.data,
                     userProfile: userProfile, // then now you can add the other user to the state
-                    messagesLoaded: true
+                    messagesLoaded: true,
+                    lastDiv: document.getElementById('messages-start')
                 }) // no need to run load messages, coz a new chatroom has no messages
             }
         }
@@ -184,9 +188,15 @@ export default class ChatRoom extends Component {
   
 
  componentDidUpdate(){
+    console.log('i received a forced update',this.props.refleshChat)
     // console.log('on update', this.props,this.state)
     //  if(this.props.chatRoom !== null && !this.state.messagesLoaded) this.loadMessages() // when you select from the chat list
-     
+    if(this.state.lastDiv !== null) this.state.lastDiv.scrollIntoView()
+    if(this.props.refleshChat){
+        this.loadMessages()
+        this.props.stopChatReflesh()
+        if(this.state.lastDiv !== null) this.state.lastDiv.scrollIntoView()
+    } // reload messages on a new message receptiona and emediately stop the reflesh to avoid loop
     if(this.state.userProfile !== null) return
     this.loadMessages() // when you select from the chat list
   }
@@ -215,7 +225,7 @@ export default class ChatRoom extends Component {
   }
 
 
-  createNewMessage = async ()=>{ // handles addition of a newly submitted message to a chatroom
+  createNewMessage = async (socket)=>{ // handles addition of a newly submitted message to a chatroom
     if(this.state.messageContent === null) return
     const messages = this.state.messages
     const newMessage = await this.submitMessage(this.state.messageContent)
@@ -226,7 +236,11 @@ export default class ChatRoom extends Component {
             })
         }
         else{
-            console.log(newMessage)
+            const socketObject = {
+                  loggedInUserId : this.props.loggedInUserProfile.id,
+                  uid: this.props.uid
+            }
+            emitEvent(socket,'msgfor',socketObject)
             const updateChatRoom = await this.updateChatRoomWithMessage(newMessage.data.id,newMessage.data.attributes.content,messages.length)
             if(updateChatRoom.ok){
                 newMessage.data.attributes.sender = {
@@ -239,20 +253,18 @@ export default class ChatRoom extends Component {
                 this.setState({ // since you just pushed a new message to an existing chatroom, then yes, you have loaded the messages already
                     messages: messages,
                     messagesLoaded: true
-                },()=>{ 
-                    const element = document.getElementById("last-message");
-                    element.scrollIntoView();
                 })// add new message to chatroom then
             }
         }
         // post new message // means add new message to chat room // 
   }
 
-  sendMessage = (messageContent)=>{
+  sendMessage = (messageContent,socket)=>{ // socket for handling live updates
        this.setState({
-          messageContent: messageContent // set the message content to state
+          messageContent: messageContent, // set the message content to state
+          GoToBottom: true
        },()=>{
-          this.createNewMessage() // actually send the message now
+          this.createNewMessage(socket) // actually send the message now
        })
   }
 
@@ -281,13 +293,16 @@ export default class ChatRoom extends Component {
             {/* end chat user head */}
             {/* start chat conversation */}
     
-            <div className="h-[80vh] p-4 lg:p-6 simplebar-scrollable-y" data-simplebar="init"><div className="simplebar-wrapper" style={{"margin":"-24px"}}><div className="simplebar-height-auto-observer-wrapper"><div className="simplebar-height-auto-observer" /></div><div className="simplebar-mask"><div className="simplebar-offset" style={{"right":"0px","bottom":"0px"}}><div className="simplebar-content-wrapper" tabIndex={0} role="region" aria-label="scrollable content" style={{"height":"100%","overflow":"hidden scroll"}}><div className="simplebar-content" style={{"padding":"24px"}}>
+            <div className="p-4 lg:p-6 simplebar-scrollable-y" data-simplebar="init"><div className="simplebar-wrapper" style={{"margin":"-24px"}}><div className="simplebar-height-auto-observer-wrapper"><div className="simplebar-height-auto-observer" /></div><div className="simplebar-mask"><div className="simplebar-offset" style={{"right":"0px","bottom":"0px"}}><div className="simplebar-content-wrapper" tabIndex={0} role="region" aria-label="scrollable content" style={{"height":"100%","overflow":"hidden scroll"}}><div className="simplebar-content" style={{"padding":"24px"}}>
                        {this.state.messagesLoaded? <Messages messages={this.state.messages} loggedInUserProfile={this.props.loggedInUserProfile} userProfile={this.state.userProfile}/> :  <ContentLoader text="loading messages..."/>}
                         </div></div></div></div><div className="simplebar-placeholder" style={{"width":"991px","height":"1263px"}} /></div>
             <div className="simplebar-track simplebar-horizontal" style={{"visibility":"hidden"}}><div className="simplebar-scrollbar" style={{"width":"0px","display":"none"}} /></div><div className="simplebar-track simplebar-vertical" style={{"visibility":"visible"}}><div className="simplebar-scrollbar" style={{"height":"139px","-webkit-transform":"translate3d(0px, 0px, 0px)","-ms-transform":"translate3d(0px, 0px, 0px)","transform":"translate3d(0px, 0px, 0px)","display":"block"}} /></div></div>
             {/* end chat conversation end */}
             {/* start chat input section */}
-            <ChatRoomFooter loggedInUserProfile={this.props.loggedInUserProfile} sendMessage={this.sendMessage}/>
+            <ChatRoomFooter  
+                socket={this.props.socket} 
+                loggedInUserProfile={this.props.loggedInUserProfile} 
+                sendMessage={this.sendMessage}/>
             {/* end chat input section */}
             </div>
             {/* end chat conversation section */}
@@ -301,3 +316,9 @@ export default class ChatRoom extends Component {
     );
   }
 }
+
+// function GoToBottom(){
+//     const router = useRouter()
+//     router.push('#messages-start')
+//     return <></>
+// }

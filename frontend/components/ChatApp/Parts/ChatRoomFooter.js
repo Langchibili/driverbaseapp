@@ -73,7 +73,7 @@ export default class ChatRoomFooter extends React.Component{
             return
           }
           else{
-            await this.reduceUserChatPoints() // then we reduce your chat points every time you send a message
+             this.reduceUserChatPoints() // then we reduce your chat points every time you send a message
           }
       }
 
@@ -88,7 +88,7 @@ export default class ChatRoomFooter extends React.Component{
       }
       this.messageTextRef.current.value = '' // clear message box
       this.setState({media:null,selectedImageSrc:null}) // clear the media message too
-      this.props.sendMessage(messageObject)
+      this.props.sendMessage(messageObject,this.props.socket)// add socket in order to handle live update
       const chatpointsdisplay = document.getElementById('chatpointsdisplay')
       if(chatpointsdisplay !== null){
         const currentPoints = Math.abs(parseInt(chatpointsdisplay.textContent)) - 2
@@ -136,7 +136,7 @@ export default class ChatRoomFooter extends React.Component{
    }
     render(){
      return (
-        <div className="z-40 w-full p-6 mb-0 bg-white border-t lg:mb-1 border-gray-50 dark:bg-zinc-800 dark:border-zinc-700" style={{position:"fixed",maxWidth:"800px",bottom:"0",left:"50",right:"50"}}>
+        <div className="z-40 w-full p-6 mb-0 bg-white border-t lg:mb-1 border-gray-50 dark:bg-zinc-800 dark:border-zinc-700" style={{position:"fixed",maxWidth:"800px",margin:'0 auto',bottom:"0",left:"0",right:"0"}}>
         { this.state.errorExists? <Alert sx={{marginBottom:1}} severity='error'>{this.state.errorMessage}</Alert> : ''}
         <ImagesListModal openImagesListModal={this.state.openImagesListModal} 
                          loggedInUserProfile={this.props.loggedInUserProfile} 
