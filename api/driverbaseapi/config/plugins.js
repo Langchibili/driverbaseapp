@@ -60,8 +60,10 @@ module.exports = ({ env }) => ({
     //   destination: "./public/uploads",
     //   maxFileSize: 100 * 1024 * 1024, // 100MB in bytes
     // },
-
-
+  'strapi-plugin-fcm': {
+      enabled: true,
+      //resolve: './src/plugins/strapi-plugin-fcm' // path to plugin folder
+    },
     upload: {
         providerOptions: {
           provider: "local",
@@ -90,7 +92,7 @@ module.exports = ({ env }) => ({
     'users-permissions': {
       config: {
         jwt: {
-          expiresIn: '7d',
+          expiresIn: '30d',
         },
       },
     }

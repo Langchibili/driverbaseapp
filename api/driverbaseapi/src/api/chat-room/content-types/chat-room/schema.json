@@ -33,10 +33,7 @@
       "type": "biginteger",
       "default": "0"
     },
-    "alias": {
-      "type": "string"
-    },
-    "chat_thumbnail": {
+    "chatDetails": {
       "type": "json"
     }
   }

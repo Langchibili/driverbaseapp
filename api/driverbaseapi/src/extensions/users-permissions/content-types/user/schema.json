@@ -110,6 +110,9 @@
     "chatpoints": {
       "type": "integer",
       "default": 10
+    },
+    "deviceId": {
+      "type": "string"
     }
   }
 }

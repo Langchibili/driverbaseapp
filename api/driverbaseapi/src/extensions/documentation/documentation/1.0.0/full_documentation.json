@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2023-11-03T00:50:37.847Z"
+    "x-generation-date": "2023-11-09T23:52:03.352Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -5792,10 +5792,7 @@
                                         "pattern": "^\\d*$",
                                         "example": "123456789"
                                       },
-                                      "alias": {
-                                        "type": "string"
-                                      },
-                                      "chat_thumbnail": {},
+                                      "chatDetails": {},
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -5851,6 +5848,9 @@
                         },
                         "chatpoints": {
                           "type": "integer"
+                        },
+                        "deviceId": {
+                          "type": "string"
                         },
                         "createdAt": {
                           "type": "string",
@@ -6019,10 +6019,7 @@
                 "pattern": "^\\d*$",
                 "example": "123456789"
               },
-              "alias": {
-                "type": "string"
-              },
-              "chat_thumbnail": {}
+              "chatDetails": {}
             }
           }
         }
@@ -9158,10 +9155,7 @@
                                         "pattern": "^\\d*$",
                                         "example": "123456789"
                                       },
-                                      "alias": {
-                                        "type": "string"
-                                      },
-                                      "chat_thumbnail": {},
+                                      "chatDetails": {},
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -9217,6 +9211,9 @@
                         },
                         "chatpoints": {
                           "type": "integer"
+                        },
+                        "deviceId": {
+                          "type": "string"
                         },
                         "createdAt": {
                           "type": "string",
@@ -9295,10 +9292,7 @@
             "pattern": "^\\d*$",
             "example": "123456789"
           },
-          "alias": {
-            "type": "string"
-          },
-          "chat_thumbnail": {},
+          "chatDetails": {},
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -16185,10 +16179,7 @@
                                       "pattern": "^\\d*$",
                                       "example": "123456789"
                                     },
-                                    "alias": {
-                                      "type": "string"
-                                    },
-                                    "chat_thumbnail": {},
+                                    "chatDetails": {},
                                     "createdAt": {
                                       "type": "string",
                                       "format": "date-time"
@@ -16244,6 +16235,9 @@
                       },
                       "chatpoints": {
                         "type": "integer"
+                      },
+                      "deviceId": {
+                        "type": "string"
                       },
                       "createdAt": {
                         "type": "string",
@@ -25060,10 +25054,7 @@
                                       "pattern": "^\\d*$",
                                       "example": "123456789"
                                     },
-                                    "alias": {
-                                      "type": "string"
-                                    },
-                                    "chat_thumbnail": {},
+                                    "chatDetails": {},
                                     "createdAt": {
                                       "type": "string",
                                       "format": "date-time"
@@ -25119,6 +25110,9 @@
                       },
                       "chatpoints": {
                         "type": "integer"
+                      },
+                      "deviceId": {
+                        "type": "string"
                       },
                       "createdAt": {
                         "type": "string",
@@ -30311,10 +30305,7 @@
                                                     "pattern": "^\\d*$",
                                                     "example": "123456789"
                                                   },
-                                                  "alias": {
-                                                    "type": "string"
-                                                  },
-                                                  "chat_thumbnail": {},
+                                                  "chatDetails": {},
                                                   "createdAt": {
                                                     "type": "string",
                                                     "format": "date-time"
@@ -30370,6 +30361,9 @@
                                     },
                                     "chatpoints": {
                                       "type": "integer"
+                                    },
+                                    "deviceId": {
+                                      "type": "string"
                                     },
                                     "createdAt": {
                                       "type": "string",
@@ -33630,10 +33624,7 @@
                                                                   "pattern": "^\\d*$",
                                                                   "example": "123456789"
                                                                 },
-                                                                "alias": {
-                                                                  "type": "string"
-                                                                },
-                                                                "chat_thumbnail": {},
+                                                                "chatDetails": {},
                                                                 "createdAt": {
                                                                   "type": "string",
                                                                   "format": "date-time"
@@ -33689,6 +33680,9 @@
                                                   },
                                                   "chatpoints": {
                                                     "type": "integer"
+                                                  },
+                                                  "deviceId": {
+                                                    "type": "string"
                                                   },
                                                   "createdAt": {
                                                     "type": "string",
@@ -34052,6 +34046,9 @@
               },
               "chatpoints": {
                 "type": "integer"
+              },
+              "deviceId": {
+                "type": "string"
               }
             }
           }
@@ -37160,10 +37157,7 @@
                                                     "pattern": "^\\d*$",
                                                     "example": "123456789"
                                                   },
-                                                  "alias": {
-                                                    "type": "string"
-                                                  },
-                                                  "chat_thumbnail": {},
+                                                  "chatDetails": {},
                                                   "createdAt": {
                                                     "type": "string",
                                                     "format": "date-time"
@@ -37219,6 +37213,9 @@
                                     },
                                     "chatpoints": {
                                       "type": "integer"
+                                    },
+                                    "deviceId": {
+                                      "type": "string"
                                     },
                                     "createdAt": {
                                       "type": "string",
@@ -37426,6 +37423,9 @@
           },
           "chatpoints": {
             "type": "integer"
+          },
+          "deviceId": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
