@@ -91,7 +91,7 @@ export default class ChatRoom extends Component {
  }
  
  loadMessages = async ()=>{
-    if(this.props.uid === undefined || this.props.uid === null || this.props.uid === 0) return
+    if(this.props.uid === undefined || this.props.uid === null || this.props.uid === 0 || this.state.chatRoom === null) return
     const userProfile = await getUserProfileUid(this.props.uid) // get other user's profile  
     const messages = await fetch(api_url+'/chat-rooms/'+this.state.chatRoom.id+'?populate=messages,messages.sender',{
         headers: {
@@ -141,14 +141,23 @@ export default class ChatRoom extends Component {
         // this means the user from uid has a profile at least
         const chatRoomName = this.createChatRoomNamesFromProfiles(userProfile)
         const chatRoomAlias = this.getNamesFromProfile(userProfile)
+        const chatRoomAlias2 = this.getNamesFromProfile(this.props.loggedInUserProfile)
         const otherUserProfileDetails = userProfile.type === 'driver'? userProfile.driverProfile.details : userProfile.carOwnerProfile.details
-
+        const loggedInUserProfileDetails = this.props.loggedInUserProfile.type === 'driver'? this.props.loggedInUserProfile.driverProfile.details : this.props.loggedInUserProfile.carOwnerProfile.details
+        const chatDetails = {} // the names and icons to show on the chat list display depending on the user logged in
+        chatDetails[userProfile.id] = {
+            alias: chatRoomAlias,
+            user_thumbnail: otherUserProfileDetails.profile_thumbnail_image
+        }
+        chatDetails[this.props.loggedInUserProfile.id] = {
+            alias: chatRoomAlias2,
+            user_thumbnail: loggedInUserProfileDetails.profile_thumbnail_image
+        }
         const chatRoomObject = {
             data: {
                 name: chatRoomName,
                 participants: [this.props.loggedInUserProfile.id, this.props.uid],
-                alias: chatRoomAlias,
-                chat_thumbnail: otherUserProfileDetails.profile_thumbnail_image
+                chatDetails: chatDetails
             }
         }
         const newChatRoom = await this.createNewChatRoom(chatRoomObject)
@@ -169,14 +178,17 @@ export default class ChatRoom extends Component {
      }
      else{
         // get the existing chatroom from props and load messages that exist from it
-        await this.loadMessages()
+        this.loadMessages()
      }
   }
   
 
-  async componentDidUpdate(){
-     if(this.state.userProfile !== null) return
-     await this.loadMessages() // when you select from the chat list
+ componentDidUpdate(){
+    // console.log('on update', this.props,this.state)
+    //  if(this.props.chatRoom !== null && !this.state.messagesLoaded) this.loadMessages() // when you select from the chat list
+     
+    if(this.state.userProfile !== null) return
+    this.loadMessages() // when you select from the chat list
   }
 
   // on message sending, always update the chatroom of the uid to ensure that it's only updated on message existence
@@ -245,8 +257,8 @@ export default class ChatRoom extends Component {
   }
 
   render() {
-    if(this.state.chatRoom === null && !this.state.errorExists) return <ContentLoader text="Opening Chat..."/>      
-    if(this.state.chatRoom !== null) {
+    if(this.state.chatRoom === null && !this.state.messagesLoaded) return <ContentLoader text="Opening Chat..."/>      
+    if(this.state.chatRoom === null && this.state.messagesLoaded) {
         if(this.state.chatRoom.hasOwnProperty('error')){
             if(this.state.chatRoom.error.status === 401) window.location = '/login' // you gotta be logged in to chat with users
         }

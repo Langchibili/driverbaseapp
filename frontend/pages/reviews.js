@@ -51,8 +51,11 @@ export default function Reviews() {
     if(data.loading  || data.loggedInUserProfile === null) {
         return (<><PageLoader /> <HtmlHead pageTitle='User | Reviews'/><ContentLoader text='loading reviews...'/><HtmlFoot/> </>)
     }
-    if(data.loggedInUserProfile === 'logged-out') window.location = '/login' // you should re-log in
-    console.log(data.loggedInUserProfile, data.userProfile)
+    if(data.loggedInUserProfile === 'logged-out') {
+      window.location = '/login' // you should re-log in
+      return
+    }
+    // console.log(data.loggedInUserProfile, data.userProfile)
     return (<>
     <UpAndBackButton/>
     {act === "show"?<><HtmlHead pageTitle={name+' | Reviews'}/>

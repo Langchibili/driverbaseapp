@@ -13,9 +13,11 @@ export default class ChatHome extends Component {
     this.state = {
         uid: this.props.uid,
         chats: this.props.loggedInUserProfile.chatRooms.filter((chatRoom)=> parseInt(chatRoom.messagesCount) !== 0),
+        chatRooms: this.props.loggedInUserProfile.chatRooms, // for filtering to check if user has chat with certain uid
         chatRoom: null,
         hasChats: null,
         checkedChatRoom: false,
+        selectUsers: false,
         chatSelected: this.props.chatSelected 
     }
   }
@@ -59,7 +61,7 @@ export default class ChatHome extends Component {
 
   checkChatRoomFromUid = ()=>{
      let chatRoom = null
-     chatRoom = this.state.chats.filter(chatRoom => {
+     chatRoom = this.state.chatRooms.filter(chatRoom => {
         if(this.props.loggedInUserProfile.id === this.state.uid) return false // means it's yourself
         let haveChatWithUid = false
         if(chatRoom.participants[0] === null || chatRoom.participants[1] === null) {
@@ -117,24 +119,36 @@ export default class ChatHome extends Component {
     })
   }
 
+  toggleSelectUsers = ()=>{
+    const selectUsers = this.state.selectUsers
+    this.setState({
+      selectUsers: !selectUsers
+    },()=>{
+      this.forceUpdate()
+    })
+  }
 
   renderChatScreen = ()=>{
     if(this.state.hasChats === null) return <ContentLoader text="Loading..."/>
+    if(this.state.selectUsers) return <SearchUsers  toggleSelectUsers={this.toggleSelectUsers} hasChats={true}/>
     if(!this.state.chatSelected){ // check if user has selected a chat
       if(!this.state.hasChats){ // check if user has any chats in their chatroom
-        return <SearchUsers />
+        return <SearchUsers  toggleSelectUsers={this.toggleSelectUsers} hasChats={false}/>
       }
       return <ChatSelector 
                   loggedInUserProfile={this.props.loggedInUserProfile} 
                   chats={this.state.chats}
-                  toggleChatSelect={this.handleChatOpen}/>
+                  toggleChatSelect={this.handleChatOpen}
+                  toggleSelectUsers={this.toggleSelectUsers}
+                  />
     }
     else{
       if(!this.state.checkedChatRoom) return <ContentLoader text="Opening chat..."/>
       return <ChatRoom 
                    {...this.props}
                    chatRoom={this.state.chatRoom} 
-                   toggleChatSelect={this.toggleChatSelect}/>
+                   toggleChatSelect={this.toggleChatSelect}
+                   />
     }
   }
   

@@ -1,9 +1,6 @@
-  // Import the functions you need from the SDKs you need
-  // import { initializeApp } from "firebase/app";
-  // import { getMessaging } from "firebase/messaging";
-  //import { getAnalytics } from "firebase/analytics";
-// import firebase from 'firebase/app';
-// import 'firebase/messaging';
+  import { initializeApp } from "firebase/app";
+  import { getMessaging, getToken } from "firebase/messaging";
+
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
   
@@ -220,91 +217,82 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
   }
 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA0Gp0e5DK84iozOnIfYBSSmtlZFZZByz8",
-  authDomain: "driverbase-65205.firebaseapp.com",
-  projectId: "driverbase-65205",
-  storageBucket: "driverbase-65205.appspot.com",
-  messagingSenderId: "452305251845",
-  appId: "1:452305251845:web:e0b0da38a105f0ec8a366c",
-  measurementId: "G-QK39TGPLYC"
+export default function sendNotification(title,body,target,publish_status="publish",type="single",payload="",image="https://driverbase.app/DriverBaseTransparentBackground.png"){
+  const targetType = type === "single"? "tokens" : "topics"
+  const notifiationObject =  {
+      data: {
+          title: title,
+          body: body,
+          image: image,
+          payload: payload,
+          targetType: targetType,
+          target: target
+      }
+  }
+
+  if(publish_status !== "publish") notifiationObject.data.publishedAt = null  // means it's a draft
+  fetch(api_url+'/strapi-plugin-fcm/fcm-notifications', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getJwt()}`
+    },
+    body: JSON.stringify(notifiationObject)
+  })
 }
 
-// Initialize Firebase
-// export const firebaseApp  = initializeApp(firebaseConfig);
-// const messaging = getMessaging(firebaseApp);
-// console.log(messaging)
-// if (!firebase.apps.length) {
-//   firebase.initializeApp(firebaseConfig);
-// }
-//export const messaging = firebase.messaging();
-
-// export const checkNotificationsSupport = ()=>{
-//   if ('Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window) {
-//       return true
-//   }
-//   return false
-// }
-
-// export const getNoticationToken = ()=>{
-//   let serviceRegistration
-//   if(!checkNotificationsSupport) return
-//   Notification.requestPermission()
-//       .then(permission => {
-//         if (permission === 'granted') {
-//           return navigator.serviceWorker.ready;
-//         }
-//       })
-//       .then(registration => {
-//         serviceRegistration = registration
-//         if (registration) {
-//           return registration.pushManager.getSubscription();
-//         }
-//       })
-//       .then(subscription => {
-//         // Check if a subscription exists; if not, you can subscribe the user
-//         if (!subscription) {
-//           return serviceRegistration.pushManager.subscribe({ userVisibleOnly: true, applicationSeverKey: 'BPmgbPwPQNl52hz_UQkmlpqlBUo_0R76Zo2VeiNvkgB1m-UuAG30lwoXBF9ZUikFzEDSMTFV1UwVdJZ4SeKV6VA' });
-//         }
-//       })
-//       .then(newSubscription => {
-//         // The newSubscription object now contains the notification token
-//         console.log('Notification Token:', newSubscription.endpoint);
-//       })
-//       .catch(error => {
-//         // An error occurred while getting the notification token
-//         console.log(error)
-//       })
   
+// const firebaseConfig = {
+//   apiKey: "AIzaSyA0Gp0e5DK84iozOnIfYBSSmtlZFZZByz8",
+//   authDomain: "driverbase-65205.firebaseapp.com",
+//   projectId: "driverbase-65205",
+//   storageBucket: "driverbase-65205.appspot.com",
+//   messagingSenderId: "452305251845",
+//   appId: "1:452305251845:web:e0b0da38a105f0ec8a366c",
+//   measurementId: "G-QK39TGPLYC"
 // }
 
+// // Initialize Firebase
+// export function pushNotifications(){
+// Notification.requestPermission().then((permission) => {
+//   const firebaseApp  = initializeApp(firebaseConfig);
 
-// export const registerServiceWorker = ()=>{ // loaded in the _app.js root component for nextjs 
-//   if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.register('/driverbase-service-worker.js')
-//       .then(registration => {
-//         console.log('Service Worker registered with scope:', registration.scope);
-//       })
-//       .catch(error => {
-//         console.error('Service Worker registration failed:', error);
-//       });
-//   }
-
-
-
-//   if ('standalone' in window.navigator && window.navigator.standalone) {
-//     // The web app is already installed and launched from the home screen.
+//   const messaging = getMessaging(firebaseApp);
+//   if (permission === 'granted') {
+//     console.log('Notification permission granted.');
+//     // TODO(developer): Retrieve a registration token for use with FCM.
+//     // In many cases once an app has been granted notification permission,
+//     // it should update its UI reflecting this.
+//     return resetUI(messaging);
 //   } else {
-//     // Prompt the user to add the app to the home screen.
-//     const addToHomeScreen = document.createElement('div');
-//     addToHomeScreen.innerHTML = 'Install To Home Screen';
-//     addToHomeScreen.addEventListener('click', () => {
-//       // Provide instructions to the user.
-//     });
-//     document.body.appendChild(addToHomeScreen);
+//     console.log('Unable to get permission to notify.');
 //   }
-
+// })
+// // Add the public key generated from the console here.
+// //getToken(messaging, {vapidKey: "BPmgbPwPQNl52hz_UQkmlpqlBUo_0R76Zo2VeiNvkgB1m-UuAG30lwoXBF9ZUikFzEDSMTFV1UwVdJZ4SeKV6VA"});
+ 
+// function resetUI(messaging) {
+//   //clearMessages();
+//  // showToken('loading...');
+//   // Get registration token. Initially this makes a network call, once retrieved
+//   // subsequent calls to getToken will return from cache.
+//   getToken({vapidKey: 'BPmgbPwPQNl52hz_UQkmlpqlBUo_0R76Zo2VeiNvkgB1m-UuAG30lwoXBF9ZUikFzEDSMTFV1UwVdJZ4SeKV6VA'}).then((currentToken) => {
+//     if (currentToken) {
+//       return currentToken
+//       // sendTokenToServer(currentToken);
+//       // updateUIForPushEnabled(currentToken);
+//     } else {
+//       // Show permission request.
+//       console.log('No registration token available. Request permission to generate one.');
+//       // Show permission UI.
+//       // updateUIForPushPermissionRequired();
+//       // setTokenSentToServer(false);
+//     }
+//   }).catch((err) => {
+//     console.log('An error occurred while retrieving token. ', err);
+//     // showToken('Error retrieving registration token. ', err);
+//     // setTokenSentToServer(false);
+//   });
 // }
 
-// "@react-spring/web": "^9.7.3",
-//     "firebase": "^10.5.2",
+// }

@@ -27,7 +27,10 @@ export default function DetailsPage() {
     if(data.loading  || data.loggedInUserProfile === null) {
         return (<><PageLoader /> <HtmlHead pageTitle='Jobs | Application'/><ContentLoader text='loading job...'/><HtmlFoot/> </>)
     }
-    if(data.loggedInUserProfile === 'logged-out' || data.loggedInUserProfile.type === "driver") window.location = '/login' // you should re-log in
+    if(data.loggedInUserProfile === 'logged-out' || data.loggedInUserProfile.type === "driver") {
+        window.location = '/login' // you should re-log in
+        return
+    }
     
     return (<>
     <UpAndBackButton/>

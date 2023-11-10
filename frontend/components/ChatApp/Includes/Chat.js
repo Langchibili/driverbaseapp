@@ -43,10 +43,10 @@ export default class Chat extends Component {
         <div className="owl-item active" style={{"width":"98.8px","margin-right":"16px"}}><div className="text-center">
           <Link href={"/chat?uid="+this.getUidFromParticipants()} onClick={()=>{this.props.toggleChatSelect(this.getUidFromParticipants())}} className="block p-2 mt-4 rounded group-data-[theme-color=violet]:bg-slate-100 group-data-[theme-color=green]:bg-green-50 group-data-[theme-color=red]:bg-red-50 group-data-[theme-color=violet]:dark:bg-zinc-600 group-data-[theme-color=green]:dark:bg-zinc-600 group-data-[theme-color=red]:dark:bg-zinc-600">
             <div className="absolute inset-0 text-center">
-              <img src={backEndUrl + imageUrlFormat(chat.chat_thumbnail,'thumbnail')} alt="user-img" className="mx-auto rounded-full w-9 h-9" />
+              <img src={backEndUrl + imageUrlFormat(chat.chatDetails[this.getUidFromParticipants()].user_thumbnail,'thumbnail')} alt="user-img" className="mx-auto rounded-full w-9 h-9" />
               <span className="absolute w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full top-7 lg:right-5 dark:border-zinc-600" />
             </div>
-            <h5 className="mt-4 mb-0 truncate text-13 dark:text-gray-50">{chat.alias}</h5>
+            <h5 className="mt-4 mb-0 truncate text-13 dark:text-gray-50">{chat.chatDetails[this.getUidFromParticipants()].alias}</h5>
           </Link>
         </div>
        </div>
@@ -60,12 +60,12 @@ export default class Chat extends Component {
             <div className="relative self-center ltr:mr-3 rtl:ml-3">
               <div className="flex items-center justify-center rounded-full w-9 h-9 group-data-[theme-color=violet]:bg-violet-500/20 group-data-[theme-color=green]:bg-green-500/20 group-data-[theme-color=red]:bg-red-500/20">
                 <span className="group-data-[theme-color=violet]:text-violet-500 group-data-[theme-color=green]:text-green-500 group-data-[theme-color=red]:text-red-500">
-                <img src={backEndUrl + imageUrlFormat(chat.chat_thumbnail,'thumbnail')} alt="user-img" className="mx-auto rounded-full w-9 h-9" />
+                <img src={backEndUrl + imageUrlFormat(chat.chatDetails[this.getUidFromParticipants()].user_thumbnail,'thumbnail')} alt="user-img" className="mx-auto rounded-full w-9 h-9" />
                 </span>
               </div>
             </div>
             <div className="flex-grow overflow-hidden">
-              <h5 className="mb-1 text-base truncate dark:text-gray-50">{chat.alias}</h5>
+              <h5 className="mb-1 text-base truncate dark:text-gray-50">{chat.chatDetails[this.getUidFromParticipants()].alias}</h5>
               <p className="mb-0 text-gray-800 truncate dark:text-gray-300 text-14">{chat.recent_message_text}</p>
             </div>
             <div className="text-gray-500 text-11 dark:text-gray-300">{this.timeUpdated(chat.updatedAt)}</div> 

@@ -26,7 +26,10 @@ export default function Chat() {
     if(data.loading  || data.loggedInUserProfile === null) {
         return (<><PageLoader /> <HtmlHead pageTitle='Chat'/><ContentLoader text='loading chat...'/><HtmlFoot/> </>)
     }
-    if(data.loggedInUserProfile === 'logged-out') window.location = '/login' // you should re-log in
+    if(data.loggedInUserProfile === 'logged-out') { 
+      window.location = '/login' // you should re-log in
+      return
+    }
     // uid !== 0 because if a user opens chat app without setting a uid, then user has not selected a chat
     uid = parseInt(uid) // has to be a number not a string as in, 0 not '0'
     return ( <html lang="en" dir="ltr" className="group" data-theme-color="green" data-mode="dark"><div style={{maxWidth:'800px',margin:'0 auto'}}><ChatHome loggedInUserProfile={data.loggedInUserProfile} uid={uid} chatSelected={uid !== 0}/></div></html>

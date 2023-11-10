@@ -136,7 +136,7 @@ export default class ChatRoomFooter extends React.Component{
    }
     render(){
      return (
-        <div className="z-40 w-full p-6 mb-0 bg-white border-t lg:mb-1 border-gray-50 dark:bg-zinc-800 dark:border-zinc-700">
+        <div className="z-40 w-full p-6 mb-0 bg-white border-t lg:mb-1 border-gray-50 dark:bg-zinc-800 dark:border-zinc-700" style={{position:"fixed",maxWidth:"800px",bottom:"0",left:"50",right:"50"}}>
         { this.state.errorExists? <Alert sx={{marginBottom:1}} severity='error'>{this.state.errorMessage}</Alert> : ''}
         <ImagesListModal openImagesListModal={this.state.openImagesListModal} 
                          loggedInUserProfile={this.props.loggedInUserProfile} 

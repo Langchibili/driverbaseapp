@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Chats from '../Lists/Chats';
+import { Button, IconButton } from '@mui/material';
+import { Add, PlusOne } from '@mui/icons-material';
 export default class ChatSelector extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +53,10 @@ export default class ChatSelector extends Component {
                                  loggedInUserProfile={this.props.loggedInUserProfile}
                                  toggleChatSelect={this.props.toggleChatSelect}/>
                         </ul>
+                        <div style={{width:'100%',margin:'0 auto', textAlign:'center'}}>
+                            <span style={{color:'white'}} onClick={this.props.toggleSelectUsers}>New Chat &nbsp;</span>
+                            <IconButton style={{backgroundColor:"white"}} onClick={this.props.toggleSelectUsers}><Add/></IconButton>
+                        </div>
                       </div>
                       </div>
                     </div>

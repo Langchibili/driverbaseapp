@@ -74,7 +74,10 @@ export default function jobs_application(props) {
       }
     }, [jid]);
     
-    if (data.loggedInUserProfile === 'logged-out') window.location = '/login' // you should re-log in
+    if (data.loggedInUserProfile === 'logged-out') { 
+      window.location = '/login' // you should re-log in
+      return
+    }
 
     if (data.loading || data.job === null || data.loggedInUserProfile === null) {
         return (<><PageLoader /> <HtmlHead pageTitle='Jobs | Application'/><ContentLoader text='loading job...'/><HtmlFoot/> </>)

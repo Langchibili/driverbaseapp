@@ -68,7 +68,10 @@ async function fetchData(url){
     }
     else {
       if (data.loggedInUserProfile !== null && data.userProfile === null && !uid && !user_type) {
-        if (data.loggedInUserProfile === 'logged-out') window.location = '/login' // you should re-log in
+        if (data.loggedInUserProfile === 'logged-out') { 
+          window.location = '/login' // you should re-log in
+          return
+        }
         return (<><HtmlHead pageTitle="Profile" /><UpAndBackButton/><div style={{minHeight:'10px'}}></div><ProfileUpdateForm userProfile={data.loggedInUserProfile} jwt={getJwt()} api_url={api_url}/><HtmlFoot /></>);
       } 
     }
