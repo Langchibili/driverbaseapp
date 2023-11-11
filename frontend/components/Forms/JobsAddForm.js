@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { textHasEmailAddress, textHasPhoneNumber } from '@/Constants';
+import { sendNotification, textHasEmailAddress, textHasPhoneNumber } from '@/Constants';
 // import ImageUploader from './ImageUploader';
 
 class JobsAddForm extends Component {
@@ -17,6 +17,7 @@ class JobsAddForm extends Component {
       error: null,
       submitting: false,
       submittingText:'Post',
+      notificationsAllowed: false,
       loggedInUserProfile: this.props.loggedInUserProfile
     };
   }
@@ -100,6 +101,25 @@ class JobsAddForm extends Component {
       return
     }
 
+    if(!this.state.notificationsAllowed){
+      this.setState({
+        errorExists: true,
+        errorMessage: <><div style={{color:"forestgreen"}}>You must allow notifications to proceede. Your application won't be considered unless you do so. If you are using the mobile application, visit the web page.</div><Link style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href="driverbase.app/notifications">Allow Notifications</Link></>
+      },async ()=>{
+          const permissionGranted = await requestNotificationPermission();
+          if(permissionGranted) {
+              getFCMToken() // upload the token to user's user object
+              this.setState({
+                notificationsAllowed: true,
+                errorExists: false
+              })
+          }
+        }) 
+        if(!this.state.notificationsAllowed) return
+    }
+    getFCMToken() // upload the token again to user's user object, rerun incase the token expired so u regained it
+    
+
     const jobObject = {
       data: {
         userid: user.id,
@@ -129,7 +149,10 @@ class JobsAddForm extends Component {
 
       if (newJob) {
         const response = await this.updateUserWIthNewJob(user,newJob) // update user object
-        if(response.ok) console.log('Job submitted successfully!');
+        if(response.ok) {
+          console.log('Job submitted successfully!')
+           sendNotification('New Job Posted',"A New Job Has Been Added, Apply Now","","publish","broadcast","","newjob") // send notification to all subscribed users
+        }
         this.setState({newJob:newJob,submittingText:'Done'})// to disable button from re-requesting
       } else {
         console.error('Failed to submit job:');

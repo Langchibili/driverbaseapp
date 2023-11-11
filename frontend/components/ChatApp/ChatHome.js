@@ -7,6 +7,8 @@ import HtmlFoot from './Meta/HtmlFoot';
 import ContentLoader from '../Includes/ContentLoader';
 import { api_url, getJwt, getLoggedInUserWithChatData, socketUrl } from '@/Constants';
 import { io } from "socket.io-client";
+import Link from 'next/link';
+import { getFCMToken, requestNotificationPermission } from '../Includes/firebase';
 const socket = io(socketUrl); // SOCKET STUFF
 
 export default class ChatHome extends Component {
@@ -21,48 +23,61 @@ export default class ChatHome extends Component {
         checkedChatRoom: false,
         selectUsers: false,
         refleshChat: false,
+        notificationsAllowed: false,
         chatSelected: this.props.chatSelected 
     }
   }
-
-  // getCall(socket){
-  //   const clientId =  getClientId()
-  //   socket.on(clientId, (arg)=>{
-  //     console.log('I am client with Id'+clientId+' '+arg)
-  //   })
-  // }
   
-   componentDidMount() {
+   async componentDidMount() {
+    if(!this.state.notificationsAllowed){ // gotta allow notifications to proceede
+        const permissionGranted = await requestNotificationPermission();
+        console.log(permissionGranted)
+        if(permissionGranted) {
+            getFCMToken() // upload the token to user's user object
+            this.setState({
+              notificationsAllowed: true
+            })
+            this.initialSetUp() // run initial setups
+        }
+       return
+    }
+   else{
+       getFCMToken() // upload the token to user's user object, rerun incase the token expired so u regained it
+       this.initialSetUp() // run initial set ups    
+   }
+  }
+
+  initialSetUp = () =>{
     // emitEvent(socket,'new-deposit', 1)
     socket.on('msgfor'+this.props.loggedInUserProfile.id, async (data)=>{ // handle message reception stuff
-      console.log('a new message arrived',data)
-      const loggedInUserProfile = await getLoggedInUserWithChatData() 
-      if(loggedInUserProfile === 'logged-out') return // means either you have a connection problem or your token has expired
-      this.setState({ // new data
-        chats: loggedInUserProfile.chatRooms.filter((chatRoom)=> parseInt(chatRoom.messagesCount) !== 0),
-        chatRooms: loggedInUserProfile.chatRooms, 
-        refleshChat: true
-      })
-    })
-   //this.getCall(socket) // the the client
+     console.log('a new message arrived',data)
+     const loggedInUserProfile = await getLoggedInUserWithChatData() 
+     if(loggedInUserProfile === 'logged-out') return // means either you have a connection problem or your token has expired
+     this.setState({ // new data
+       chats: loggedInUserProfile.chatRooms.filter((chatRoom)=> parseInt(chatRoom.messagesCount) !== 0),
+       chatRooms: loggedInUserProfile.chatRooms, 
+       refleshChat: true
+     })
+   })
+  //this.getCall(socket) // the the client
 
-    console.log('for reference to user object',this.props.loggedInUserProfile)
-    if(!this.props.chatSelected){ // because this.props.uid === 0
-      if(this.props.loggedInUserProfile.chatRooms.length === 0){
-        this.setState({
-          hasChats: false
-        })
-      }
-      else{
-        this.setState({
-          hasChats: true
-        })
-      }
-    }
-    else{
-      this.checkChatRoomFromUid()
-    }
-  }
+   console.log('for reference to user object',this.props.loggedInUserProfile)
+   if(!this.props.chatSelected){ // because this.props.uid === 0
+     if(this.props.loggedInUserProfile.chatRooms.length === 0){
+       this.setState({
+         hasChats: false
+       })
+     }
+     else{
+       this.setState({
+         hasChats: true
+       })
+     }
+   }
+   else{
+     this.checkChatRoomFromUid()
+   }
+ }
 
    removeChatRoomFromUser = async (user,chatRoomId)=>{
     if(user === undefined) return // cannot update an undefined user
@@ -157,6 +172,7 @@ export default class ChatHome extends Component {
   }
 
   renderChatScreen = ()=>{
+    if(!this.state.notificationsAllowed) return <div style={{padding:10,width:'100%',margin:'0 auto',textAlign:'center'}}><div style={{color:"forestgreen"}}>You must allow notifications to proceede. You cannot open any chat with anyone unless you do so. If you are using the mobile application, visit the web page.</div><Link style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href="driverbase.app/notifications">Allow Notifications</Link></div>
     if(this.state.hasChats === null) return <ContentLoader text="Loading..."/>
     if(this.state.selectUsers) return <SearchUsers  toggleSelectUsers={this.toggleSelectUsers} hasChats={true}/>
     if(!this.state.chatSelected){ // check if user has selected a chat

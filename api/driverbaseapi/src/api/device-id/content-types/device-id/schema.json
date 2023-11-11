@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "device_ids",
+  "info": {
+    "singularName": "device-id",
+    "pluralName": "device-ids",
+    "displayName": "deviceIds"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "deviceIds": {
+      "type": "json"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { api_url, emitEvent, getJwt, getUserProfileUid } from '@/Constants';
+import  { sendNotification, api_url, emitEvent, getJwt, getUserProfileUid, requestNotificationPermissionAndToken } from '@/Constants';
 import ContentLoader from '@/components/Includes/ContentLoader';
 import { Alert, Button } from '@mui/material';
 import Messages from '../Lists/Messages';
@@ -240,7 +240,11 @@ export default class ChatRoom extends Component {
                   loggedInUserId : this.props.loggedInUserProfile.id,
                   uid: this.props.uid
             }
-            emitEvent(socket,'msgfor',socketObject)
+            /* send live update to other user */
+            emitEvent(socket,'msgfor',socketObject) // send live update to other user
+            /* send notification on new message */
+             sendNotification('new message',newMessage.data.attributes.content,this.props.uid) // send notification of a new message
+            /* updates end*/
             const updateChatRoom = await this.updateChatRoomWithMessage(newMessage.data.id,newMessage.data.attributes.content,messages.length)
             if(updateChatRoom.ok){
                 newMessage.data.attributes.sender = {
@@ -261,8 +265,7 @@ export default class ChatRoom extends Component {
 
   sendMessage = (messageContent,socket)=>{ // socket for handling live updates
        this.setState({
-          messageContent: messageContent, // set the message content to state
-          GoToBottom: true
+          messageContent: messageContent // set the message content to state     
        },()=>{
           this.createNewMessage(socket) // actually send the message now
        })
@@ -316,9 +319,3 @@ export default class ChatRoom extends Component {
     );
   }
 }
-
-// function GoToBottom(){
-//     const router = useRouter()
-//     router.push('#messages-start')
-//     return <></>
-// }

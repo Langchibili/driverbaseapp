@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Alert from '@mui/material/Alert'; 
-import { api_url, imageUrlFormat, minimal_car_owner_populate_url, minimal_driver_populate_url } from '@/Constants';
+import { api_url, imageUrlFormat, minimal_car_owner_populate_url, minimal_driver_populate_url, sendNotification } from '@/Constants';
 import List from '../Lists/List';
 import ContentLoader from '../Includes/ContentLoader';
 
@@ -184,6 +184,7 @@ export default class JobView extends React.Component {
     body: JSON.stringify(jobActivationObject)
     })
     if(updatedJob.ok){
+        sendNotification('New Applicant',"Your job has a new applicant",this.state.carOwnerId) // send notification of a new message
         this.setState({
             submitting: false
         })
@@ -214,6 +215,7 @@ export default class JobView extends React.Component {
     body: JSON.stringify(jobActivationObject)
     })
     if(updatedJob.ok){
+      sendNotification('New Applicant',"Your job has a new applicant",this.state.carOwnerId) // send notification of a new message
         this.setState({
             submitting: false
         })

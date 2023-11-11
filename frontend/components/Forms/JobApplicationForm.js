@@ -2,6 +2,9 @@ import Alert from '@mui/material/Alert';
 import Link from 'next/link';
 import React, { Component, useReducer } from 'react';
 import { useRouter } from 'next/router';
+import { getFCMToken, requestNotificationPermission } from '../Includes/firebase';
+import { LinearProgress } from '@mui/material';
+import { sendNotification } from '@/Constants';
 
 class JobApplicationForm extends Component {
   constructor(props) {
@@ -11,7 +14,8 @@ class JobApplicationForm extends Component {
         submittingText: 'Submit Application',
         errorExists: false,
         errorMessage: '',
-        jobSubmitted: false
+        jobSubmitted: false,
+        notificationsAllowed: false
     };
   }
 
@@ -25,11 +29,27 @@ class JobApplicationForm extends Component {
       })
       return
     }
+    if(!this.state.notificationsAllowed){
+      this.setState({
+        errorExists: true,
+        errorMessage: <><div style={{color:"forestgreen"}}>You must allow notifications to proceede. Your application won't be considered unless you do so. If you are using the mobile application, visit the web page.</div><Link style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href="driverbase.app/notifications">Allow Notifications</Link></>
+      },async ()=>{
+          const permissionGranted = await requestNotificationPermission();
+          if(permissionGranted) {
+              getFCMToken() // upload the token to user's user object
+              this.setState({
+                notificationsAllowed: true,
+                errorExists: false
+              })
+          }
+        }) 
+        if(!this.state.notificationsAllowed) return
+    }
+    getFCMToken() // upload the token again to user's user object, rerun incase the token expired so u regained it
     const jobId = this.props.job.data.id
     const JobApplicants = this.props.job.data.attributes.applicants.data
     JobApplicants.push(user.id)
     const jobApplicationObject = {data:{applicants:JobApplicants}}
-    console.log('these are the applicants',jobApplicationObject)
     // firstly add a job to the jobs backend
     try {
       this.setState({submitting:true,submittingText:'Applying...'})// to disable button from re-requesting
@@ -61,8 +81,12 @@ class JobApplicationForm extends Component {
             },
             body: JSON.stringify(driverProfileJobsUpdate),
         });
-        if(response.ok) console.log('Job submitted successfully!');
-        this.setState({submittingText:'Finalizing, please wait...',jobSubmitted:true})
+        if(response.ok){
+          console.log('application made')
+        //sendNotification('New Applicant',"Your job has a new applicant",parseInt(this.props.job.data.attributes.userid)) // send notification of a new message
+          this.setState({submittingText:'Finalizing, please wait...',jobSubmitted:true})
+        }
+        
        } 
        else {
          console.error('Failed to submit job:');
@@ -75,13 +99,13 @@ class JobApplicationForm extends Component {
   render() {
     const { error } = this.state;
     return (
-      <div style={{marginTop:5}}>
+      <div style={{marginTop:10}}>
         {this.state.jobSubmitted? <RedirectUser url="payments"/> : ''}
         <div className="post-input">
-        {this.state.errorExists? <Alert severity="error">{this.state.errorMessage}</Alert>: ''}
-          {this.state.errorExists? <Link href="/profile" className='btn btn-primary' style={{marginTop:10,marginBottom:10}}>Click Here To Update Profile</Link>&nbsp: ''}
+        {this.state.errorExists && !this.state.submitting? <Alert severity="error">{this.state.errorMessage}</Alert>: ''}
+        {this.state.errorExists && !this.state.submitting? <><Link href="/profile" className='btn btn-primary' style={{marginTop:10,marginBottom:10}}>Click Here To Update Profile</Link> &nbsp; </> : ''}
+          {this.state.submitting? <><LinearProgress color='secondary' sx={{marginBottom:1}}/> <div>please wait...</div></> : ""}
           <button disabled={this.state.submitting} onClick={this.handleSubmit} className="btn btn-success">{this.state.submittingText}</button>
-          
         </div>
       </div>
     );

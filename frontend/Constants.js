@@ -1,5 +1,6 @@
-  import { initializeApp } from "firebase/app";
-  import { getMessaging, getToken } from "firebase/messaging";
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken } from "firebase/messaging";
+import { getFCMToken, requestNotificationPermission } from "./components/Includes/firebase";
 
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
@@ -62,6 +63,10 @@ else{
 export let api_url = apiurl
 export let backEndUrl = backendUrl
 export let socketUrl = socketurl
+
+// firebase stuff
+export const vapidKey = 'BPmgbPwPQNl52hz_UQkmlpqlBUo_0R76Zo2VeiNvkgB1m-UuAG30lwoXBF9ZUikFzEDSMTFV1UwVdJZ4SeKV6VA'
+export const serverKey = 'AAAAaU9-bgU:APA91bEFdjOkan1oW6YSRNu2CxjF0pRzFijJ5-nMymQCzeK_uNJ8kMsfyU1rXalWzaZLOZehN3O6YybXybj6wQz74_lelww-RT3mpG1ubcBZKMilVvECeeBZxiEnTtm4ZozAPqlAWRje'
 
 export function getJwt(){
     userHasConnection() // check the internet connection
@@ -199,6 +204,19 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
     return profile  
  } 
   
+ export async function getUserFromUid(uid){
+    const user = await fetch(api_url+'/users/'+uid,{
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error(error))
+    if(user === undefined) return 'not-found' // means couldn't connect well, so leave u logged out
+    if('error' in user) return 'not-found' //it means you are looged out
+    return user
+  }
+
   export const imageUrlFormat = (image,formatWanted)=>{
     if(image === undefined || image === null) return '/uploads/default-profile.png' 
     
@@ -237,40 +255,79 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
     socket.emit(eventType, data)
   } 
 
-export default function sendNotification(title,body,target,publish_status="publish",type="single",payload="",image="https://driverbase.app/DriverBaseTransparentBackground.png"){
+export async function sendNotification(title,body,target,publish_status="publish",type="single",payload="",topic="newjob",image="https://driverbase.app/DriverBaseTransparentBackground.png"){
   const targetType = type === "single"? "tokens" : "topics"
-  const notifiationObject =  {
-      data: {
-          title: title,
-          body: body,
-          image: image,
-          payload: payload,
-          targetType: targetType,
-          target: target
-      }
-  }
+  let targetDevice,uid,notificationObject 
+  if(type === "single"){ 
+      uid = target  // means the target parameter is a user's id
+      const user = await getUserFromUid(uid)
+      console.log('the other one',user)
+      if(user === 'not-found') return
+      targetDevice = user.deviceId
 
-  if(publish_status !== "publish") notifiationObject.data.publishedAt = null  // means it's a draft
+      notificationObject =  {
+        data: {
+            title: title,
+            body: body,
+            image: image,
+            payload: payload,
+            targetType: targetType,
+            target: targetDevice
+        }
+    }
+  }
+  else{ // means u wanna broadcast the message
+    const response = await fetch(api_url+'/device-id',{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getJwt()}`
+      }
+    }).then(response => response.json())
+      .then(data => data)
+      .catch(error => console.error(error))
+      const deviceIds = response.data.attributes.deviceIds // get available devices
+      
+    notificationObject =  {
+        data:{
+            title: title,
+            body: body,
+            image: image,
+            payload: payload,
+            targetType: 'topics',
+            target: topic
+         }
+     }
+  }
+  
+
+  if(publish_status !== "publish") notificationObject.data.publishedAt = null  // means it's a draft
   fetch(api_url+'/strapi-plugin-fcm/fcm-notifications', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${getJwt()}`
     },
-    body: JSON.stringify(notifiationObject)
+    body: JSON.stringify(notificationObject)
   })
 }
 
   
-// const firebaseConfig = {
-//   apiKey: "AIzaSyA0Gp0e5DK84iozOnIfYBSSmtlZFZZByz8",
-//   authDomain: "driverbase-65205.firebaseapp.com",
-//   projectId: "driverbase-65205",
-//   storageBucket: "driverbase-65205.appspot.com",
-//   messagingSenderId: "452305251845",
-//   appId: "1:452305251845:web:e0b0da38a105f0ec8a366c",
-//   measurementId: "G-QK39TGPLYC"
-// }
+const firebaseConfig = {
+  apiKey: "AIzaSyA0Gp0e5DK84iozOnIfYBSSmtlZFZZByz8",
+  authDomain: "driverbase-65205.firebaseapp.com",
+  projectId: "driverbase-65205",
+  storageBucket: "driverbase-65205.appspot.com",
+  messagingSenderId: "452305251845",
+  appId: "1:452305251845:web:e0b0da38a105f0ec8a366c",
+  measurementId: "G-QK39TGPLYC"
+}
+// Example usage in a Next.js component
+export async function requestNotificationPermissionAndToken() {
+  const permissionGranted = await requestNotificationPermission();
+  if(permissionGranted) {
+       return getFCMToken(); // if user has allowed notifications, then send it to the server
+  }
+}
 
 // // Initialize Firebase
 // export function pushNotifications(){
