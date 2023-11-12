@@ -2,9 +2,8 @@ import Link from 'next/link';
 import React, { Component } from 'react';
 import { Alert } from '@mui/material';
 import CopyAndWhatsAppButtons from '../Includes/CopyAndWhatsAppButtons';
-const fakeStr1 = 'kahs3lahebblo2uwb00an~#va5lwi_ad_fgaljdj'; // security stuff
-const fakeStr2 ='klahewi_ad_fgalloanv;;aitalkjfajhsbbluwba==hn3vajd5j=+;'
-        
+import { fakeStr1, fakeStr2 } from '@/Constants';
+  
 class LoginForm extends Component {
   constructor(props) {
     super(props);

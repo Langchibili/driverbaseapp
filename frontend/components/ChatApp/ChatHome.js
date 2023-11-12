@@ -5,9 +5,8 @@ import SearchUsers from './Views/search_users';
 import HtmlHead from './Meta/HmtlHead';
 import HtmlFoot from './Meta/HtmlFoot';
 import ContentLoader from '../Includes/ContentLoader';
-import { api_url, getJwt, getLoggedInUserWithChatData, socketUrl } from '@/Constants';
+import { api_url, clientUrl, fakeStr1, fakeStr2, getJwt, getLoggedInUserWithChatData, socketUrl } from '@/Constants';
 import { io } from "socket.io-client";
-import Link from 'next/link';
 import { getFCMToken, requestNotificationPermission } from '../Includes/firebase';
 const socket = io(socketUrl); // SOCKET STUFF
 
@@ -27,25 +26,30 @@ export default class ChatHome extends Component {
         chatSelected: this.props.chatSelected 
     }
   }
-  
-   async componentDidMount() {
-    if(!this.state.notificationsAllowed){ // gotta allow notifications to proceede
-        const permissionGranted = await requestNotificationPermission();
-        console.log(permissionGranted)
-        if(permissionGranted) {
-            getFCMToken() // upload the token to user's user object
-            this.setState({
-              notificationsAllowed: true
-            })
+
+  async componentDidMount(){
+    const token = await getFCMToken() // get existing token
+    if(token === null || token === undefined){
+      const permissionGranted = await requestNotificationPermission();
+      if(permissionGranted){
+          this.setState({
+            notificationsAllowed: true,
+            errorExists: false
+          },()=>{
             this.initialSetUp() // run initial setups
-        }
-       return
+            getFCMToken() // upload the token to user's user object
+          })
+      } 
     }
-   else{
-       getFCMToken() // upload the token to user's user object, rerun incase the token expired so u regained it
-       this.initialSetUp() // run initial set ups    
-   }
-  }
+    else{
+      this.setState({
+        notificationsAllowed: true
+      },()=>{
+        this.initialSetUp() // run initial setups
+        getFCMToken() // upload the token again to user's user object, rerun incase the token expired so u regained it
+      })
+    }
+}
 
   initialSetUp = () =>{
     // emitEvent(socket,'new-deposit', 1)
@@ -172,7 +176,8 @@ export default class ChatHome extends Component {
   }
 
   renderChatScreen = ()=>{
-    if(!this.state.notificationsAllowed) return <div style={{padding:10,width:'100%',margin:'0 auto',textAlign:'center'}}><div style={{color:"forestgreen"}}>You must allow notifications to proceede. You cannot open any chat with anyone unless you do so. If you are using the mobile application, visit the web page.</div><Link style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href="driverbase.app/notifications">Allow Notifications</Link></div>
+  
+    if(!this.state.notificationsAllowed) return <div style={{width:'100%',margin:'0 auto',textAlign:'center'}}><div style={{color:"forestgreen",fontWeight:600,padding:10}}>You must allow notifications to proceede. You cannot open any chat with anyone unless you do so. If you are using the mobile application, visit the web page by clicking the link below to allow notifications, then come back to the app. And we recomend that you open the web page in a google chrome browser </div><a style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href={clientUrl+"/notifications?jwt="+fakeStr1+getJwt()+fakeStr2+"&uid="+this.props.loggedInUserProfile.id}>Allow Notifications</a></div>
     if(this.state.hasChats === null) return <ContentLoader text="Loading..."/>
     if(this.state.selectUsers) return <SearchUsers  toggleSelectUsers={this.toggleSelectUsers} hasChats={true}/>
     if(!this.state.chatSelected){ // check if user has selected a chat

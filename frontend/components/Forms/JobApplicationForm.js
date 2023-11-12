@@ -4,7 +4,7 @@ import React, { Component, useReducer } from 'react';
 import { useRouter } from 'next/router';
 import { getFCMToken, requestNotificationPermission } from '../Includes/firebase';
 import { LinearProgress } from '@mui/material';
-import { sendNotification } from '@/Constants';
+import { clientUrl, fakeStr1, fakeStr2, getJwt, sendNotification } from '@/Constants';
 
 class JobApplicationForm extends Component {
   constructor(props) {
@@ -19,6 +19,33 @@ class JobApplicationForm extends Component {
     };
   }
 
+  async componentDidMount(){
+    const token = await getFCMToken() // get existing token
+    if(token === null || token === undefined){
+      this.setState({
+        errorExists: true,
+        errorMessage: <><div style={{color:"forestgreen",fontWeight:900}}>You must allow notifications to proceede. Your application won't be submitted unless you do so. If you are using the mobile application, visit the web page by clicking the link below to allow notifications, then come back to the app. And we recomend that you open the web page in a google chrome browser </div><a style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href={clientUrl+"/notifications?jwt="+fakeStr1+getJwt()+fakeStr2+"&uid="+this.props.loggedInUserProfile.id}>Allow Notifications</a></>
+      },async ()=>{
+          const permissionGranted = await requestNotificationPermission();
+          if(permissionGranted){
+              this.setState({
+                notificationsAllowed: true,
+                errorExists: false
+              },()=>{
+                getFCMToken() // upload the token to user's user object
+              })
+          }
+        }) 
+    }
+    else{
+      this.setState({
+        notificationsAllowed: true,
+        errorExists: false
+      })
+      getFCMToken() // upload the token again to user's user object, rerun incase the token expired so u regained it
+    }
+}
+
   handleSubmit = async (event) => {
     event.preventDefault()
     const user = this.props.loggedInUserProfile // get the job applying user data
@@ -29,23 +56,7 @@ class JobApplicationForm extends Component {
       })
       return
     }
-    if(!this.state.notificationsAllowed){
-      this.setState({
-        errorExists: true,
-        errorMessage: <><div style={{color:"forestgreen"}}>You must allow notifications to proceede. Your application won't be considered unless you do so. If you are using the mobile application, visit the web page.</div><Link style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href="driverbase.app/notifications">Allow Notifications</Link></>
-      },async ()=>{
-          const permissionGranted = await requestNotificationPermission();
-          if(permissionGranted) {
-              getFCMToken() // upload the token to user's user object
-              this.setState({
-                notificationsAllowed: true,
-                errorExists: false
-              })
-          }
-        }) 
-        if(!this.state.notificationsAllowed) return
-    }
-    getFCMToken() // upload the token again to user's user object, rerun incase the token expired so u regained it
+    
     const jobId = this.props.job.data.id
     const JobApplicants = this.props.job.data.attributes.applicants.data
     JobApplicants.push(user.id)
@@ -84,7 +95,7 @@ class JobApplicationForm extends Component {
         if(response.ok){
           console.log('application made')
         //sendNotification('New Applicant',"Your job has a new applicant",parseInt(this.props.job.data.attributes.userid)) // send notification of a new message
-          this.setState({submittingText:'Finalizing, please wait...',jobSubmitted:true})
+          this.setState({submittingText:'submitting application...',jobSubmitted:true})
         }
         
        } 
@@ -105,7 +116,7 @@ class JobApplicationForm extends Component {
         {this.state.errorExists && !this.state.submitting? <Alert severity="error">{this.state.errorMessage}</Alert>: ''}
         {this.state.errorExists && !this.state.submitting? <><Link href="/profile" className='btn btn-primary' style={{marginTop:10,marginBottom:10}}>Click Here To Update Profile</Link> &nbsp; </> : ''}
           {this.state.submitting? <><LinearProgress color='secondary' sx={{marginBottom:1}}/> <div>please wait...</div></> : ""}
-          <button disabled={this.state.submitting} onClick={this.handleSubmit} className="btn btn-success">{this.state.submittingText}</button>
+          {!this.state.notificationsAllowed? <button className="btn btn-primary" style={{backgroundColor:'lightgray'}}>Submit Application</button> : <button disabled={this.state.submitting} onClick={this.handleSubmit} className="btn btn-success">{this.state.submittingText}</button>}
         </div>
       </div>
     );

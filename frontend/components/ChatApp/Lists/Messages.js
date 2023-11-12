@@ -3,7 +3,7 @@ import Message from '../Includes/Message';
 
 export default function Messages(props){
   return (
-    <ul>
+    <ul style={{marginTop:'60px'}}>
     {
        props.messages.map((message,index)=>{
              if(index === props.messages.length-1){

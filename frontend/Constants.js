@@ -8,14 +8,14 @@ import { getFCMToken, requestNotificationPermission } from "./components/Include
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
-const fakeStr1 = 'kahs3lahebblo2uwb00an~#va5lwi_ad_fgaljdj'; // security stuff
-const fakeStr2 ='klahewi_ad_fgalloanv;;aitalkjfajhsbbluwba==hn3vajd5j=+;'
+export const fakeStr1 = 'kahs3lahebblo2uwb00an~va5lwi_ad_fgaljdj'; // security stuff
+export const fakeStr2 ='klahewi_ad_fgalloanv;;aitalkjfajhsbbluwba==hn3vajd5j=+;'
   
  /*localhost: */ export const environment = 'local'
  ///*liveserver: */ export const environment = 'live'
  // /*testserver: */ export const environment = 'test'
 
- let apiurl, backendUrl, socketurl
+ let apiurl, backendUrl, socketurl, clienturl
  if(environment === 'local'){
    /*localhost: */  apiurl = 'http://localhost:1337/api'
  }
@@ -58,31 +58,50 @@ else{
 }
 
 
+if(environment === 'local'){
+  /*localhost: */  clienturl = 'http://localhost:3000'
+}
+else if(environment === 'live'){
+  /*liveserver: */ clienturl = 'https://driverbase.app' // for production's sake
+}
+else if(environment === 'test'){
+ /*testserver: */  clienturl = 'https://test.driverbase.app' // the api to be used when deployed to the test site
+}
+else{
+   /*liveserver: */ clienturl = 'https://driverbase.app' // for production's sake
+}
+
 
 // export the urls
 export let api_url = apiurl
 export let backEndUrl = backendUrl
 export let socketUrl = socketurl
+export let clientUrl = clienturl
 
 // firebase stuff
 export const vapidKey = 'BPmgbPwPQNl52hz_UQkmlpqlBUo_0R76Zo2VeiNvkgB1m-UuAG30lwoXBF9ZUikFzEDSMTFV1UwVdJZ4SeKV6VA'
 export const serverKey = 'AAAAaU9-bgU:APA91bEFdjOkan1oW6YSRNu2CxjF0pRzFijJ5-nMymQCzeK_uNJ8kMsfyU1rXalWzaZLOZehN3O6YybXybj6wQz74_lelww-RT3mpG1ubcBZKMilVvECeeBZxiEnTtm4ZozAPqlAWRje'
 
-export function getJwt(){
+export function getJwt(customjwt=null){
     userHasConnection() // check the internet connection
-    let jwt = localStorage.getItem('jwt')
-    if(jwt === undefined || jwt === null){
-        localStorage.setItem('jwt','o')
-        return null
+    if(customjwt === null || customjwt === undefined){
+      let jwt = localStorage.getItem('jwt')
+      if(jwt === undefined || jwt === null){
+          localStorage.setItem('jwt','o')
+          return null
+      }
+      else{
+          if(jwt === 'o'){
+            return null
+          }
+          jwt = localStorage.jwt.split(fakeStr1)[1]
+          return jwt.split(fakeStr2)[0]
+      }
     }
     else{
-        if(jwt === 'o'){
-          return null
-        }
-        jwt = localStorage.jwt.split(fakeStr1)[1]
-        return jwt.split(fakeStr2)[0]
+      let jwt = customjwt.split(fakeStr1)[1]
+      return jwt.split(fakeStr2)[0]
     }
-   
 } 
 
 export const driver_populate_url = 'populate=driverProfile,driverProfile.details,driverProfile.details.address,driverProfile.details.profile_cover_image,driverProfile.details.profile_thumbnail_image,driverProfile.driving_license_front,driverProfile.drivers_license_back,driverProfile.driving_certificate_front,driverProfile.driving_certificate_back,driverProfile.nrc_front,driverProfile.nrc_back'
@@ -213,6 +232,7 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
         .then(data => data)
         .catch(error => console.error(error))
     if(user === undefined) return 'not-found' // means couldn't connect well, so leave u logged out
+    if(user === null) return 'not-found' // means couldn't connect well, so leave u logged out
     if('error' in user) return 'not-found' //it means you are looged out
     return user
   }

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { sendNotification, textHasEmailAddress, textHasPhoneNumber } from '@/Constants';
+import { backEndUrl, clientUrl, fakeStr1, fakeStr2, getJwt, sendNotification, textHasEmailAddress, textHasPhoneNumber } from '@/Constants';
+import { getFCMToken, requestNotificationPermission } from '../Includes/firebase';
 // import ImageUploader from './ImageUploader';
 
 class JobsAddForm extends Component {
@@ -63,9 +64,33 @@ class JobsAddForm extends Component {
   //   if(this.state.userProfile.carOwnerProfile.details.profile_cover_image === null) return image
   //   return this.state.userProfile.carOwnerProfile.details.profile_cover_image
   // }
-
+  async componentDidMount(){
+      const token = await getFCMToken() // get existing token
+      if(token === null || token === undefined){
+        this.setState({
+          error: <><div style={{color:"forestgreen",fontWeight:900}}>You must allow notifications to proceede. We need to send you notifications whenever a user applies to your job. If you are using the mobile application, visit the web page by clicking the link below to allow notifications, then come back to the app. And we recomend that you open the web page in a google chrome browser </div><a style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href={clientUrl+"/notifications?jwt="+fakeStr1+getJwt()+fakeStr2+"&uid="+this.props.loggedInUserProfile.id}>Allow Notifications</a></>
+        },async ()=>{
+            const permissionGranted = await requestNotificationPermission();
+            if(permissionGranted){
+                this.setState({
+                  notificationsAllowed: true,
+                  error: null
+                },()=>{
+                  getFCMToken() // upload the token to user's user object
+                })
+            }
+          }) 
+      }
+      else{
+        this.setState({
+          notificationsAllowed: true,
+          error: null
+        })
+        getFCMToken() // upload the token again to user's user object, rerun incase the token expired so u regained it
+      }
+  }
   handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const { jobBody, title, jobDuration, pay } = this.state;
     const user = this.state.loggedInUserProfile // get the job creating user data
 
@@ -100,25 +125,6 @@ class JobsAddForm extends Component {
       })
       return
     }
-
-    if(!this.state.notificationsAllowed){
-      this.setState({
-        errorExists: true,
-        errorMessage: <><div style={{color:"forestgreen"}}>You must allow notifications to proceede. Your application won't be considered unless you do so. If you are using the mobile application, visit the web page.</div><Link style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href="driverbase.app/notifications">Allow Notifications</Link></>
-      },async ()=>{
-          const permissionGranted = await requestNotificationPermission();
-          if(permissionGranted) {
-              getFCMToken() // upload the token to user's user object
-              this.setState({
-                notificationsAllowed: true,
-                errorExists: false
-              })
-          }
-        }) 
-        if(!this.state.notificationsAllowed) return
-    }
-    getFCMToken() // upload the token again to user's user object, rerun incase the token expired so u regained it
-    
 
     const jobObject = {
       data: {
@@ -204,8 +210,8 @@ class JobsAddForm extends Component {
                   image={this.imageThumbnail()}
                   jwt={this.props.jwt}/> : <></>} */}
 
-          {error && <div className="text-warning" style={{marginBottom:'5px'}}>{error}</div>}
-          <button disabled={this.state.submitting} onClick={this.handleSubmit} className="btn btn-primary">{this.state.submittingText}</button>
+          {error !== null && <div className="text-warning" style={{marginBottom:'5px'}}>{error}</div>}
+          {!this.state.notificationsAllowed? <button className="btn btn-primary" style={{backgroundColor:'lightgray'}}>Post</button> : <button disabled={this.state.submitting} onClick={this.handleSubmit} className="btn btn-primary">{this.state.submittingText}</button>}
         </div>
       </div>
     );
