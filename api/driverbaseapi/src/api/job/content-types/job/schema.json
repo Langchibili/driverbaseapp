@@ -63,11 +63,10 @@
       ],
       "default": "open"
     },
-    "jobApplication": {
+    "job_applications": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::job-application.job-application",
-      "mappedBy": "job"
+      "relation": "oneToMany",
+      "target": "api::job-application.job-application"
     }
   }
 }

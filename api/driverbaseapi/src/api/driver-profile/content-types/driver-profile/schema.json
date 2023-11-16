@@ -116,11 +116,10 @@
       "type": "boolean",
       "default": false
     },
-    "jobApplication": {
+    "job_applications": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::job-application.job-application",
-      "mappedBy": "driverProfile"
+      "relation": "oneToMany",
+      "target": "api::job-application.job-application"
     }
   }
 }

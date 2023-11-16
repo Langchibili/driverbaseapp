@@ -4,30 +4,29 @@
   "info": {
     "singularName": "job-application",
     "pluralName": "job-applications",
-    "displayName": "JobApplication"
+    "displayName": "JobApplication",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "job": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::job.job",
-      "inversedBy": "jobApplication"
-    },
-    "driverProfile": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::driver-profile.driver-profile",
-      "inversedBy": "jobApplication"
-    },
     "payment_offer": {
       "type": "string"
     },
     "cover_letter": {
       "type": "text"
+    },
+    "driver_profile": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::driver-profile.driver-profile"
+    },
+    "job": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::job.job"
     }
   }
 }

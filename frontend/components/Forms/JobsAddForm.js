@@ -68,7 +68,7 @@ class JobsAddForm extends Component {
       const token = await getFCMToken() // get existing token
       if(token === null || token === undefined){
         this.setState({
-          error: <><div style={{color:"forestgreen",fontWeight:900}}>You must allow notifications to proceede. We need to send you notifications whenever a user applies to your job. If you are using the mobile application, visit the web page by clicking the link below to allow notifications, then come back to the app. And we recomend that you open the web page in a google chrome browser </div><a style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href={clientUrl+"/notifications?jwt="+fakeStr1+getJwt()+fakeStr2+"&uid="+this.props.loggedInUserProfile.id}>Allow Notifications</a></>
+          error: <><div style={{color:"forestgreen",fontWeight:900}}>You must allow notifications to proceede. We need to send you notifications whenever a user applies to your job. If you are using the mobile application, visit the web page by clicking the link below to allow notifications, then come back to the app. And we recomend that you open the web page in a google chrome browser </div><a style={{color:"cadetblue",border:"1px solid cadetblue",display:"inline-block",borderRadius:4,padding:5,marginTop:5,fontWeight:900}} href={clientUrl+"/notifications?jwt="+fakeStr1+getJwt()+fakeStr2+"&uid="+this.props.loggedInUserProfile.id} target="_blank">Allow Notifications</a></>
         },async ()=>{
             const permissionGranted = await requestNotificationPermission();
             if(permissionGranted){
@@ -168,6 +168,7 @@ class JobsAddForm extends Component {
     }
   };
   
+ 
   
   render() {
     const { error } = this.state;

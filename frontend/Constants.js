@@ -95,6 +95,9 @@ export function getJwt(customjwt=null){
             return null
           }
           jwt = localStorage.jwt.split(fakeStr1)[1]
+          if(jwt === undefined){
+            return null
+          }
           return jwt.split(fakeStr2)[0]
       }
     }
@@ -139,7 +142,8 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
     if('error' in user) return 'logged-out' //it means you are looged out
       //.catch(error => return 'logged-out')
      // get user first to check type, coz we don't know whether user is a driver or car owner
-    if(user.type === 'driver') url = api_url+'/users/me/?'+driver_populate_url+populateExtension.driverProfile
+     setUserDefaultValues(user) // set default values
+     if(user.type === 'driver') url = api_url+'/users/me/?'+driver_populate_url+populateExtension.driverProfile
     if(user.type === 'car-owner') url = api_url+'/users/me/?populate=carOwnerProfile,carOwnerProfile.details,carOwnerProfile.details.address,carOwnerProfile.details.profile_cover_image,carOwnerProfile.details.profile_thumbnail_image'+populateExtension.carOwnerProfile
     
     return await fetch(url,{
@@ -166,7 +170,9 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
       .catch(error => console.error(error))
     if(user === undefined) return 'logged-out' // means couldn't connect well, so leave u logged out
     if('error' in user) return 'logged-out' //it means you are looged out
-      //.catch(error => return 'logged-out')
+    
+    setUserDefaultValues(user) // set default values  
+    //.catch(error => return 'logged-out')
      // get user first to check type, coz we don't know whether user is a driver or car owner
     if(user.type === 'driver') url = api_url+'/users/me/?'+driver_populate_with_chat_url
     if(user.type === 'car-owner') url = api_url+'/users/me/?'+car_owner_populate__with_chat_url
@@ -182,6 +188,23 @@ export async function getLoggedInUserData(populateExtension={carOwnerProfile: ''
   }
 
   
+  export async function setUserDefaultValues(user){
+    const setDefualtsObject = {}
+    if(user.chatpoints === null) {
+      setDefualtsObject.chatpoints = 6
+    }
+    else{
+      return // then nothing to do here
+    }
+    fetch(api_url+'/users/'+user.id, { 
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getJwt()}`
+      },
+      body: JSON.stringify(setDefualtsObject)
+    })
+  }
   export const getUserProfileUid = async (uid)=>{
     let url
     const user = await fetch(api_url+'/users/'+uid,{
