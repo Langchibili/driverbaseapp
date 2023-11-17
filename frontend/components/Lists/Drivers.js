@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { backEndUrl, imageUrlFormat } from '@/Constants';
+import { api_url, backEndUrl, imageUrlFormat } from '@/Constants';
 import Link from 'next/link';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -8,13 +8,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import RatingDisplay from '../Includes/RatingDisplay';
+import { Chip } from '@mui/material';
 
 export default class Drivers extends Component {
   constructor(props) {
     super(props);
     this.state = {
-       openPhoneNumberDialog: false
-    };
+       openPhoneNumberDialog: false,
+       currentDriverOffer: null
+    }
   }
 
   dateCreated = (dateInput)=>{
@@ -23,6 +25,26 @@ export default class Drivers extends Component {
     date = new Date(date)
     return date.toDateString()
   }
+
+  showDriverOffer = (driverProfileId)=>{
+    if(this.props.loggedInUserProfile.type === "driver") return <></> // only car owners can see drivers offers on jobs
+    if(this.props.listingType === "applicants"){
+      
+      let offer = this.props.job.job_applications.data.filter((job_application)=>{
+        return parseInt(job_application.attributes.driverProfileId) === parseInt(driverProfileId)
+      })
+      if(offer.length === 1){
+          return <OfferDisplay offer={offer[0].attributes}/>
+      }
+      else{
+        return <></>
+      }
+    }
+    else{
+      return <></>
+    }
+  }
+
   
   checkEligibility = (driver)=>{
     let eligibleForListing = false
@@ -187,6 +209,7 @@ export default class Drivers extends Component {
                     </li>
                   </ul>
                   {this.props.actionTotake === "activate"? <>{this.enlistDriverButtons(driverProfile.id)} <div>Driver Profile Id: <strong>{driverProfile.id}</strong></div><div>Driver Usernname: <strong>{driver.username}</strong></div></>: ""}
+                  {this.showDriverOffer(driver.driverProfile.id)}
                   </div>
               </div>
             )
@@ -234,4 +257,36 @@ export default class Drivers extends Component {
     </div>
   );
 }
-''
+
+class OfferDisplay extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {
+        showMore: false,
+        showMoreText: "View More"
+    }
+  }
+  handleShowCoverLetter = ()=>{
+       const showMore = this.state.showMore
+       if(showMore){
+          this.setState({
+            showMore: false,
+            showMoreText: "View More"
+          })
+       }
+       else{
+        this.setState({
+          showMore: true,
+          showMoreText: "Hide"
+        })
+       }
+  }
+  render(){
+    return (<>
+      <small style={{display:"inline-block",marginRight:"4px"}}>this driver has offered to be paid: <strong style={{color:'forestgreen'}}>{this.props.offer.payment_offer}</strong></small>
+      {this.props.offer.cover_letter.length > 0? <>
+      <Chip label={this.state.showMoreText} variant="outlined" onClick={this.handleShowCoverLetter} />
+      {this.state.showMore? <div>{this.props.offer.cover_letter}</div> : <></>} </> : <></>}
+      </>)
+  }
+}

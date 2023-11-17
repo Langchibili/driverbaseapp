@@ -85,7 +85,9 @@ export default class JobsApplicationOffer extends Component {
         cover_letter: coverLetter,
         payment_offer: pay,
         driver_profile : user.driverProfile.id,
-        job: this.props.job.data.id
+        job: this.props.job.data.id,
+        jobId: this.props.job.data.id,
+        driverProfileId: user.driverProfile.id
       }
     }
    

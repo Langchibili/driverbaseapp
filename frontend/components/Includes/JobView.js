@@ -32,7 +32,7 @@ export default class JobView extends React.Component {
   
 
   getJob = async (jid)=> {
-    return fetch(this.props.api_url+'/jobs/'+jid+'/?populate=applicants,premium_applicants,activated_applicants',{
+    return fetch(this.props.api_url+'/jobs/'+jid+'/?populate=*',{
         headers: {
           'Content-Type': 'application/json'
         }
@@ -119,6 +119,7 @@ export default class JobView extends React.Component {
         return (<>
               {this.state.premiumApplicants.length >= 1?
               <List
+
               loggedInUserProfile={this.props.loggedInUserProfile}
               handlePageChange={this.props.handlePageChange}
               itemsName ='users'
@@ -126,6 +127,8 @@ export default class JobView extends React.Component {
               api_url={this.props.api_url}
               listType='drivers' 
               hideViewMoreButton={true}
+              listingType="applicants"
+              job={this.state.job}
               listTitle='Recommended Drivers' /> : <></>}
                
               {this.state.activatedApplicants.length >= 1?
@@ -137,6 +140,8 @@ export default class JobView extends React.Component {
               api_url={this.props.api_url}
               listType='drivers' 
               hideViewMoreButton={true}
+              listingType="applicants"
+              job={this.state.job}
               listTitle='Applicants' />: <></>}
 
              {/*  AT THE MOMENT, ONLY PREMIUM AND ACTIVATED APPLICANTS ARE SHOWN

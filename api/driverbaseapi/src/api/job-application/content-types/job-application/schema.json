@@ -27,6 +27,12 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::job.job"
+    },
+    "jobId": {
+      "type": "string"
+    },
+    "driverProfileId": {
+      "type": "string"
     }
   }
 }

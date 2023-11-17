@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2023-11-16T01:03:00.995Z"
+    "x-generation-date": "2023-11-16T22:58:35.881Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -1971,6 +1971,12 @@
                                                           }
                                                         }
                                                       }
+                                                    },
+                                                    "jobId": {
+                                                      "type": "string"
+                                                    },
+                                                    "driverProfileId": {
+                                                      "type": "string"
                                                     },
                                                     "createdAt": {
                                                       "type": "string",
@@ -5043,6 +5049,12 @@
                                                                       }
                                                                     }
                                                                   }
+                                                                },
+                                                                "jobId": {
+                                                                  "type": "string"
+                                                                },
+                                                                "driverProfileId": {
+                                                                  "type": "string"
                                                                 },
                                                                 "createdAt": {
                                                                   "type": "string",
@@ -8412,6 +8424,12 @@
                                                                       }
                                                                     }
                                                                   }
+                                                                },
+                                                                "jobId": {
+                                                                  "type": "string"
+                                                                },
+                                                                "driverProfileId": {
+                                                                  "type": "string"
                                                                 },
                                                                 "createdAt": {
                                                                   "type": "string",
@@ -12814,6 +12832,12 @@
                                                         }
                                                       }
                                                     },
+                                                    "jobId": {
+                                                      "type": "string"
+                                                    },
+                                                    "driverProfileId": {
+                                                      "type": "string"
+                                                    },
                                                     "createdAt": {
                                                       "type": "string",
                                                       "format": "date-time"
@@ -15839,6 +15863,12 @@
                                                                     }
                                                                   }
                                                                 }
+                                                              },
+                                                              "jobId": {
+                                                                "type": "string"
+                                                              },
+                                                              "driverProfileId": {
+                                                                "type": "string"
                                                               },
                                                               "createdAt": {
                                                                 "type": "string",
@@ -19155,6 +19185,12 @@
                                                                     }
                                                                   }
                                                                 },
+                                                                "jobId": {
+                                                                  "type": "string"
+                                                                },
+                                                                "driverProfileId": {
+                                                                  "type": "string"
+                                                                },
                                                                 "createdAt": {
                                                                   "type": "string",
                                                                   "format": "date-time"
@@ -19652,6 +19688,12 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "jobId": {
+                "type": "string"
+              },
+              "driverProfileId": {
+                "type": "string"
               }
             }
           }
@@ -21739,6 +21781,12 @@
                                                       }
                                                     }
                                                   },
+                                                  "jobId": {
+                                                    "type": "string"
+                                                  },
+                                                  "driverProfileId": {
+                                                    "type": "string"
+                                                  },
                                                   "createdAt": {
                                                     "type": "string",
                                                     "format": "date-time"
@@ -22231,6 +22279,12 @@
                 }
               }
             }
+          },
+          "jobId": {
+            "type": "string"
+          },
+          "driverProfileId": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -24738,6 +24792,12 @@
                                                                     }
                                                                   }
                                                                 }
+                                                              },
+                                                              "jobId": {
+                                                                "type": "string"
+                                                              },
+                                                              "driverProfileId": {
+                                                                "type": "string"
                                                               },
                                                               "createdAt": {
                                                                 "type": "string",
@@ -29996,6 +30056,12 @@
                                                                                 }
                                                                               }
                                                                             },
+                                                                            "jobId": {
+                                                                              "type": "string"
+                                                                            },
+                                                                            "driverProfileId": {
+                                                                              "type": "string"
+                                                                            },
                                                                             "createdAt": {
                                                                               "type": "string",
                                                                               "format": "date-time"
@@ -33320,6 +33386,12 @@
                                                                                                 }
                                                                                               }
                                                                                             }
+                                                                                          },
+                                                                                          "jobId": {
+                                                                                            "type": "string"
+                                                                                          },
+                                                                                          "driverProfileId": {
+                                                                                            "type": "string"
                                                                                           },
                                                                                           "createdAt": {
                                                                                             "type": "string",
@@ -36859,6 +36931,12 @@
                                                                                   }
                                                                                 }
                                                                               }
+                                                                            },
+                                                                            "jobId": {
+                                                                              "type": "string"
+                                                                            },
+                                                                            "driverProfileId": {
+                                                                              "type": "string"
                                                                             },
                                                                             "createdAt": {
                                                                               "type": "string",
