@@ -11,8 +11,8 @@ import { getFCMToken, requestNotificationPermission } from "./components/Include
 export const fakeStr1 = 'kahs3lahebblo2uwb00an~va5lwi_ad_fgaljdj'; // security stuff
 export const fakeStr2 ='klahewi_ad_fgalloanv;;aitalkjfajhsbbluwba==hn3vajd5j=+;'
   
- /*localhost: */ export const environment = 'local'
- ///*liveserver: */ export const environment = 'live'
+ ///*localhost: */ export const environment = 'local'
+ /*liveserver: */ export const environment = 'live'
  // /*testserver: */ export const environment = 'test'
 
  let apiurl, backendUrl, socketurl, clienturl

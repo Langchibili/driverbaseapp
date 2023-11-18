@@ -17,24 +17,40 @@ class CarOwners extends Component {
     return date.toDateString()
   }
   
-  checkEligibility = (carOwner)=>{
+  // checkEligibility = (carOwner)=>{
+  //   let eligibleForListing = false
+  //   let carOwnerProfile
+  //   if(this.props.listAll) { // if on list all page
+  //       carOwnerProfile = carOwner.attributes // the profile
+  //       if(carOwnerProfile.details === null || carOwnerProfile.details === undefined) { 
+  //         return false // you aren't eligible
+  //       }
+  //       if(carOwnerProfile.details.firstname === null || carOwnerProfile.details.lastname === null){
+  //         eligibleForListing = false
+  //       }
+  //       else{
+  //         eligibleForListing = true
+  //     }
+  //   }
+  //   else{ // if a shorter list
+  //       carOwnerProfile = carOwner.carOwnerProfile // the profile
+  //       if(carOwner.profile_completion_percentage < 9){
+  //         eligibleForListing = false
+  //       }
+  //       else{
+  //         eligibleForListing = true
+  //     }
+  //   }
+  //   return eligibleForListing
+  // }
+  checkEligibility = (driver)=>{
     let eligibleForListing = false
-    let carOwnerProfile
-    if(this.props.listAll) { // if on list all page
-        carOwnerProfile = carOwner.attributes // the profile
-        if(carOwnerProfile.details === null || carOwnerProfile.details === undefined) { 
-          return false // you aren't eligible
-        }
-        if(carOwnerProfile.details.firstname === null || carOwnerProfile.details.lastname === null){
-          eligibleForListing = false
-        }
-        else{
-          eligibleForListing = true
-      }
+    if(this.props.listAll) { // if on list all  page - coz we already filter in the itemslistall page
+        eligibleForListing = true
     }
     else{ // if a shorter list
-        carOwnerProfile = carOwner.carOwnerProfile // the profile
-        if(carOwner.profile_completion_percentage < 9){
+       // driverProfile = driver.driverProfile // the profile
+        if(driver.profile_completion_percentage < 9){
           eligibleForListing = false
         }
         else{
@@ -67,7 +83,12 @@ class CarOwners extends Component {
            eligibleForListing = this.checkEligibility(carOwner) // check carOwner listing eligibility
            if(carOwnerProfile === undefined) return
            if(eligibleForListing){ //check if profile has got details to it
-               fullname = carOwnerProfile.details.firstname? carOwnerProfile.details.firstname +' '+ carOwnerProfile.details.lastname || '' : ''
+              if(carOwnerProfile.details.firstname === null || carOwnerProfile.details.lastname === null){
+                fullname = "UnNamed Car Owner"
+              }
+              else{
+                fullname = carOwnerProfile.details.firstname? carOwnerProfile.details.firstname +' '+ carOwnerProfile.details.lastname || '' : ''
+              }
                // thumbnail stuff
                if(carOwnerProfile.details.profile_thumbnail_image !== null){ // check if thumbnail exists
                 if(this.props.listAll) {

@@ -48,19 +48,11 @@ export default class Drivers extends Component {
   
   checkEligibility = (driver)=>{
     let eligibleForListing = false
-    let driverProfile
-    if(this.props.listAll) { // if on list all page
-        driverProfile = driver.attributes // the profile
-        if(driverProfile.details === null || driverProfile.details === undefined) { 
-          return false // you aren't eligible
-        }
-        if(driverProfile.details.firstname === null || driverProfile.details.lastname === null){
-          eligibleForListing = false
-        }
+    if(this.props.listAll) { // if on list all  page - coz we already filter in the itemslistall page
         eligibleForListing = true
     }
     else{ // if a shorter list
-        driverProfile = driver.driverProfile // the profile
+       // driverProfile = driver.driverProfile // the profile
         if(driver.profile_completion_percentage < 9){
           eligibleForListing = false
         }
@@ -145,7 +137,12 @@ export default class Drivers extends Component {
             eligibleForListing = this.checkEligibility(driver) // check driver listing eligibility
             if(eligibleForListing){ // check if user has a profile 
                 // FULLNAME  
-                fullname = driverProfile.details.firstname? driverProfile.details.firstname +' '+ driverProfile.details.lastname || '' : ''
+                if(driverProfile.details.firstname === null || driverProfile.details.lastname === null){
+                    fullname = "UnNamed Driver"
+                }
+                else{
+                    fullname = driverProfile.details.firstname? driverProfile.details.firstname +' '+ driverProfile.details.lastname || '' : ''
+                }
                 // THUMBNAIL
                 if(driverProfile.details.profile_thumbnail_image !== null){ // check if thumbnail exists
                     if(this.props.listAll) {
@@ -209,7 +206,7 @@ export default class Drivers extends Component {
                     </li>
                   </ul>
                   {this.props.actionTotake === "activate"? <>{this.enlistDriverButtons(driverProfile.id)} <div>Driver Profile Id: <strong>{driverProfile.id}</strong></div><div>Driver Usernname: <strong>{driver.username}</strong></div></>: ""}
-                  {this.showDriverOffer(driver.driverProfile.id)}
+                  {driver.driverProfile !== undefined && driver.driverProfile !== null? this.showDriverOffer(driver.driverProfile.id) : <></>}
                   </div>
               </div>
             )

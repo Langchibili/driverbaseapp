@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2023-11-16T22:58:35.881Z"
+    "x-generation-date": "2023-11-18T01:08:46.958Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -1973,10 +1973,14 @@
                                                       }
                                                     },
                                                     "jobId": {
-                                                      "type": "string"
+                                                      "type": "string",
+                                                      "pattern": "^\\d*$",
+                                                      "example": "123456789"
                                                     },
                                                     "driverProfileId": {
-                                                      "type": "string"
+                                                      "type": "string",
+                                                      "pattern": "^\\d*$",
+                                                      "example": "123456789"
                                                     },
                                                     "createdAt": {
                                                       "type": "string",
@@ -5051,10 +5055,14 @@
                                                                   }
                                                                 },
                                                                 "jobId": {
-                                                                  "type": "string"
+                                                                  "type": "string",
+                                                                  "pattern": "^\\d*$",
+                                                                  "example": "123456789"
                                                                 },
                                                                 "driverProfileId": {
-                                                                  "type": "string"
+                                                                  "type": "string",
+                                                                  "pattern": "^\\d*$",
+                                                                  "example": "123456789"
                                                                 },
                                                                 "createdAt": {
                                                                   "type": "string",
@@ -8426,10 +8434,14 @@
                                                                   }
                                                                 },
                                                                 "jobId": {
-                                                                  "type": "string"
+                                                                  "type": "string",
+                                                                  "pattern": "^\\d*$",
+                                                                  "example": "123456789"
                                                                 },
                                                                 "driverProfileId": {
-                                                                  "type": "string"
+                                                                  "type": "string",
+                                                                  "pattern": "^\\d*$",
+                                                                  "example": "123456789"
                                                                 },
                                                                 "createdAt": {
                                                                   "type": "string",
@@ -12833,10 +12845,14 @@
                                                       }
                                                     },
                                                     "jobId": {
-                                                      "type": "string"
+                                                      "type": "string",
+                                                      "pattern": "^\\d*$",
+                                                      "example": "123456789"
                                                     },
                                                     "driverProfileId": {
-                                                      "type": "string"
+                                                      "type": "string",
+                                                      "pattern": "^\\d*$",
+                                                      "example": "123456789"
                                                     },
                                                     "createdAt": {
                                                       "type": "string",
@@ -15865,10 +15881,14 @@
                                                                 }
                                                               },
                                                               "jobId": {
-                                                                "type": "string"
+                                                                "type": "string",
+                                                                "pattern": "^\\d*$",
+                                                                "example": "123456789"
                                                               },
                                                               "driverProfileId": {
-                                                                "type": "string"
+                                                                "type": "string",
+                                                                "pattern": "^\\d*$",
+                                                                "example": "123456789"
                                                               },
                                                               "createdAt": {
                                                                 "type": "string",
@@ -19186,10 +19206,14 @@
                                                                   }
                                                                 },
                                                                 "jobId": {
-                                                                  "type": "string"
+                                                                  "type": "string",
+                                                                  "pattern": "^\\d*$",
+                                                                  "example": "123456789"
                                                                 },
                                                                 "driverProfileId": {
-                                                                  "type": "string"
+                                                                  "type": "string",
+                                                                  "pattern": "^\\d*$",
+                                                                  "example": "123456789"
                                                                 },
                                                                 "createdAt": {
                                                                   "type": "string",
@@ -19690,10 +19714,14 @@
                 "example": "string or id"
               },
               "jobId": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^\\d*$",
+                "example": "123456789"
               },
               "driverProfileId": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^\\d*$",
+                "example": "123456789"
               }
             }
           }
@@ -21782,10 +21810,14 @@
                                                     }
                                                   },
                                                   "jobId": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "pattern": "^\\d*$",
+                                                    "example": "123456789"
                                                   },
                                                   "driverProfileId": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "pattern": "^\\d*$",
+                                                    "example": "123456789"
                                                   },
                                                   "createdAt": {
                                                     "type": "string",
@@ -22281,10 +22313,14 @@
             }
           },
           "jobId": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^\\d*$",
+            "example": "123456789"
           },
           "driverProfileId": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^\\d*$",
+            "example": "123456789"
           },
           "createdAt": {
             "type": "string",
@@ -24794,10 +24830,14 @@
                                                                 }
                                                               },
                                                               "jobId": {
-                                                                "type": "string"
+                                                                "type": "string",
+                                                                "pattern": "^\\d*$",
+                                                                "example": "123456789"
                                                               },
                                                               "driverProfileId": {
-                                                                "type": "string"
+                                                                "type": "string",
+                                                                "pattern": "^\\d*$",
+                                                                "example": "123456789"
                                                               },
                                                               "createdAt": {
                                                                 "type": "string",
@@ -30057,10 +30097,14 @@
                                                                               }
                                                                             },
                                                                             "jobId": {
-                                                                              "type": "string"
+                                                                              "type": "string",
+                                                                              "pattern": "^\\d*$",
+                                                                              "example": "123456789"
                                                                             },
                                                                             "driverProfileId": {
-                                                                              "type": "string"
+                                                                              "type": "string",
+                                                                              "pattern": "^\\d*$",
+                                                                              "example": "123456789"
                                                                             },
                                                                             "createdAt": {
                                                                               "type": "string",
@@ -33388,10 +33432,14 @@
                                                                                             }
                                                                                           },
                                                                                           "jobId": {
-                                                                                            "type": "string"
+                                                                                            "type": "string",
+                                                                                            "pattern": "^\\d*$",
+                                                                                            "example": "123456789"
                                                                                           },
                                                                                           "driverProfileId": {
-                                                                                            "type": "string"
+                                                                                            "type": "string",
+                                                                                            "pattern": "^\\d*$",
+                                                                                            "example": "123456789"
                                                                                           },
                                                                                           "createdAt": {
                                                                                             "type": "string",
@@ -36933,10 +36981,14 @@
                                                                               }
                                                                             },
                                                                             "jobId": {
-                                                                              "type": "string"
+                                                                              "type": "string",
+                                                                              "pattern": "^\\d*$",
+                                                                              "example": "123456789"
                                                                             },
                                                                             "driverProfileId": {
-                                                                              "type": "string"
+                                                                              "type": "string",
+                                                                              "pattern": "^\\d*$",
+                                                                              "example": "123456789"
                                                                             },
                                                                             "createdAt": {
                                                                               "type": "string",

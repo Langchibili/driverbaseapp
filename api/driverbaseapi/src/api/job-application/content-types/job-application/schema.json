@@ -29,10 +29,10 @@
       "target": "api::job.job"
     },
     "jobId": {
-      "type": "string"
+      "type": "biginteger"
     },
     "driverProfileId": {
-      "type": "string"
+      "type": "biginteger"
     }
   }
 }

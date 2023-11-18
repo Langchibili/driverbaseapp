@@ -29,15 +29,18 @@ class ItemListAll extends Component {
     return items.slice(startIndex, endIndex);
   }
   
-  async loadNextBatch(startIndex, maxIndex, reqUrl) {
-    const newItems = await fetch(reqUrl+'?pagination[start]='+startIndex+'&pagination[limit]='+maxIndex,{
+  async loadNextBatch(startIndex, maxIndex, reqUrl) { 
+    let urlExtension
+    if(this.props.itemsName === 'jobs') urlExtension = '?pagination[start]='+startIndex+'&pagination[limit]='+maxIndex
+    if(this.props.itemsName !== 'jobs') urlExtension = '&pagination[start]='+startIndex+'&pagination[limit]='+maxIndex
+    const newItems = await fetch(reqUrl+urlExtension,{
       headers: {
         'Content-Type': 'application/json'
       }
      }).then(response => response.json())
       .then(data => data)
       .catch(error => console.error(error))
-    return newItems;``
+    return newItems
   }
   
   getReqUrl = ()=>{
@@ -75,6 +78,32 @@ class ItemListAll extends Component {
     }
   }
 
+  checkListingEligibility = (user)=>{
+    if(this.props.listType !== 'drivers' && this.props.listType !== 'car-owners') return true // only filtering drivers or now
+    if(!user.attributes.hasOwnProperty('details'))  return false // you aren't eligible
+    if(user.attributes.details === undefined )  return false // you aren't eligible
+    if(user.attributes.details === null )  return false // you aren't eligible
+    if(parseInt(user.attributes.userid) === 30) return true // some users who should be enlisted
+    if(this.props.listType === 'drivers'){
+      if(parseInt(user.attributes.userid) < 33) return false // removing users i use for tasting
+    }
+    if(this.props.listType === 'car-owners'){
+      if(parseInt(user.attributes.userid) < 29) return false // removing users i use for tasting
+    }
+    return true
+  }
+
+  sortByThumbnailAdded = (users)=>{
+    if(this.props.listType !== 'drivers' && this.props.listType !== 'car-owners') return
+    const usersWithImages = users.filter((user)=>{
+      return user.attributes.details.profile_thumbnail_image.data !== null
+    })
+    const usersWithoutImages = users.filter((user)=>{
+      return user.attributes.details.profile_thumbnail_image.data === null
+    })
+    return [...usersWithImages,...usersWithoutImages]
+  }
+
   async componentDidMount(){
     const reqUrl = this.getReqUrl()
     let items,pageCount,itemsToDisplay,itemsTotal // to be filled bellow
@@ -83,6 +112,7 @@ class ItemListAll extends Component {
     if(response !== undefined){
       if('data' in response){ // if the response has .data property
         items = response.data
+        if(this.props.listType !== 'jobs') items = items.filter((item)=>this.checkListingEligibility(item))
       }
       /* If it's a car ownwer managing posts */
       if(this.props.listType === 'jobs' && (this.props.act === 'edit' || this.props.act === 'delete')){ // if a user is editing or deleting their posts
@@ -104,6 +134,8 @@ class ItemListAll extends Component {
             pageCount = this.getPageCount(itemsTotal,10) // get page count if it's to list all 
         }
         
+        if(this.props.listType !== 'jobs') items = items.filter((item)=>this.checkListingEligibility(item))
+
         this.setState({// add items to state
           items:items,
           pageCount: pageCount,
@@ -121,9 +153,19 @@ class ItemListAll extends Component {
               if(newItems !== undefined) {
                   if('data' in newItems){ // if the response has .data proprty
                     newItems = newItems.data
+                    if(this.props.listType !== 'jobs') newItems = newItems.filter((item)=>this.checkListingEligibility(item))
                   }
                   items.push(...newItems);
-                  this.setState({items:items,contentLoaded: true})// add rest of the items
+                  this.setState({
+                    items:items,
+                    contentLoaded: this.props.listType === 'jobs'
+                  },()=>{
+                    if(this.props.listType === 'jobs') return
+                    this.setState({
+                      items: this.sortByThumbnailAdded(this.state.items),
+                      contentLoaded: true
+                    })
+                  })// add rest of the items
               } 
             }
             else{
@@ -166,6 +208,7 @@ class ItemListAll extends Component {
 }
   
   render() {
+    if(this.state.items === undefined) return <ContentLoader text={'Loading '+this.props.itemsName+ '...'}/>
     if(this.state.contentLoaded && this.state.items.length < 0) return <div><p>No {this.props.itemsName} available at the moment</p></div>
     return <> <div style={{minHeight: '600px'}}> {this.state.contentLoaded? this.renderList() : <ContentLoader text={'Loading '+this.props.itemsName+ '...'}/>} <div style={{minHeight:'50px'}}></div> <PaginationLinks handlePageChange={this.handlePageChange} itemsCount={this.state.pageCount} itemsName={this.props.itemsName} page={this.state.page}/></div></>
   }
