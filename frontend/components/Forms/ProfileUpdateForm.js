@@ -505,7 +505,7 @@ class ProfileUpdateForm extends Component {
                                     <option value="canter">Canter</option>
                                     <option value="noah">Noah</option>
                                     <option value="big-bus">Big-Bus</option>
-                                    <option value=" mini-bus"> Mini-Bus</option>
+                                    <option value=" mini-bus">Mini-Bus</option>
                                     <option value="heavy-duty">Heavy-Duty</option>
                                 </select>
                             </div>
