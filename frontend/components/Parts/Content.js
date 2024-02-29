@@ -11,6 +11,8 @@ import DriversCount from '../Includes/CountsDisplay/DriversCount';
 import CarOwnersCount from '../Includes/CountsDisplay/CarOwnersCount';
 import JobsCounts from '../Includes/CountsDisplay/JobsCounts';
 import FeaturedCarOwners from '../Includes/FeaturedContent/FeaturedCarOwners';
+import LocalAds from '../Includes/Ads/LocalAds';
+import GoogleAd from '../Includes/Ads/GoogleAd';
 
 class Content extends Component {
   constructor(props) {
@@ -73,6 +75,7 @@ class Content extends Component {
     <div className="content-body pt-4">
       {/* row */}
       <div className="container-fluid">
+        <LocalAds title="gotriips"/>
         <div className="row">
            {this.props.loggedInUserProfile !== 'logged-out'?<ProfileUpdatePercent 
                loggedInUserProfile={this.props.loggedInUserProfile}
@@ -89,6 +92,7 @@ class Content extends Component {
               api_url={this.props.api_url}
               listType='jobs' 
               listTitle='Latest Jobs'/>
+              {/* <GoogleAd adClient="your-ad-client-id" adSlot="your-ad-slot-id" /> */}
           </div>
           <div className="col-xl-4 col-xxl-6 col-lg-6">
               <List 

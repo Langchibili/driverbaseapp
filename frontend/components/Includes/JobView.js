@@ -5,6 +5,7 @@ import ContentLoader from './ContentLoader';
 import List from '../Lists/List';
 import Alert from '@mui/material/Alert'; 
 import { backEndUrl, getJwt, imageUrlFormat, minimal_car_owner_populate_url, minimal_driver_populate_url } from '@/Constants';
+import LocalAds from './Ads/LocalAds';
 
 export default class JobView extends React.Component {
   constructor(props) {
@@ -199,6 +200,7 @@ export default class JobView extends React.Component {
                 </div>
              
         </div>
+        <LocalAds title="gotriips"/>
         {this.renderApplicants()}
     </div>)
   }
